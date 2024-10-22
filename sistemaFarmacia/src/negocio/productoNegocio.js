@@ -21,7 +21,8 @@ class ProductoService {
 
     async crearProducto(data) {
         const { nombre, lote, cantidad, precio, fechaVencimiento } = data;
-        console.log(typeof cantidad)
+    
+        // Validaciones
         if (!this.validarTexto(nombre, 3, 50)) {
             throw new Error('El nombre del producto es inválido (entre 3 y 50 caracteres).');
         }
@@ -37,9 +38,14 @@ class ProductoService {
         if (!this.validarFecha(fechaVencimiento)) {
             throw new Error('La fecha de vencimiento es inválida. Debe tener el formato YYYY-MM-DD.');
         }
-
+    
+        const existe = await this.productoDAO.verificarProductoExistente(nombre);
+        if (existe) {
+            throw new Error('El producto con este nombre ya existe.');
+        }
+    
         const nuevoProducto = new Producto(nombre, lote, cantidad, fechaVencimiento, precio);
-
+    
         try {
             const resultado = await this.productoDAO.crearProducto(nuevoProducto);
             return resultado;
@@ -47,6 +53,7 @@ class ProductoService {
             throw new Error(error.message);
         }
     }
+    
 
     async obtenerProductoPorId(id) {
         if (!id || !this.validarNumeroPositivo(id)) {
@@ -63,7 +70,7 @@ class ProductoService {
 
     async actualizarProducto(id, data) {
         const { nombre, lote, cantidad, fechaVencimiento, precio } = data;
-
+    
         if (!id || !this.validarNumeroPositivo(id)) {
             throw new Error('ID de producto inválido.');
         }
@@ -82,9 +89,14 @@ class ProductoService {
         if (!this.validarNumeroPositivo(precio)) {
             throw new Error('El precio debe ser un número positivo.');
         }
-
+    
+        const existe = await this.productoDAO.verificarProductoExistente(nombre);
+        if (existe) {
+            throw new Error('Ya existe un producto con este nombre. El nombre debe ser único.');
+        }
+    
         const productoActualizado = new Producto(nombre, lote, cantidad, fechaVencimiento, precio);
-
+    
         try {
             const resultado = await this.productoDAO.actualizarProducto(id, productoActualizado);
             return resultado;
@@ -92,6 +104,7 @@ class ProductoService {
             throw new Error('Error al actualizar el producto: ' + error.message);
         }
     }
+    
 
     async eliminarProducto(id) {
         if (!id || !this.validarNumeroPositivo(id)) {
