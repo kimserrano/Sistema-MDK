@@ -1,4 +1,3 @@
-const connection = require('../dbConexion/database');
 class Cajero {
     constructor(nombre) {
         this.nombre = nombre;

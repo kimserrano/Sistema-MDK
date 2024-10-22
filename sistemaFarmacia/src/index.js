@@ -13,15 +13,18 @@ require('electron-reload')(__dirname, {
 })
 //
 
-let mainWindow, holaWindow;
+
+let mainWindow
+
 
 app.on('ready', () => {
     mainWindow = new BrowserWindow({
-        
+        width: 800, // Tamaño personalizado
+        height: 600,
         webPreferences: {
-            
-            nodeIntegration: true, // Asegurarse de que esté habilitado
-            contextIsolation: false, // Asegúrate de que esté en falso para usar ipcRenderer
+            nodeIntegration: true, // Permite la integración con Node.js
+            contextIsolation: false // Asegura la compatibilidad con el código actual
+
         }
     });
     mainWindow.removeMenu();
@@ -29,6 +32,7 @@ app.on('ready', () => {
         pathname: path.join(__dirname, 'views/login.html'),
         protocol: 'file',
         slashes: true
+
     }));
 
     ipcMain.on('open-hola-window', () => {
@@ -41,6 +45,5 @@ app.on('ready', () => {
     
     mainWindow.webContents.openDevTools();
 });
-
 
 

@@ -1,0 +1,8 @@
+class Cliente {
+    constructor(telefono, nombre) {
+        this.telefono = telefono;
+        this.nombre = nombre;
+    }
+}
+
+module.exports = Cliente;
