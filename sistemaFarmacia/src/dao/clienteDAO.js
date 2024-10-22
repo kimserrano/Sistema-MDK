@@ -23,15 +23,15 @@ class clienteDAO {
 
      // Buscar cliente por teléfono
      static buscarPorTelefono(telefono) {
-        const query = 'SELECT * FROM Cliente WHERE Telefono = ?';
-    
-        return connection.promise().query(query, [telefono])
+        const query = 'SELECT * FROM Cliente WHERE Telefono LIKE ?';
+        const likeTelefono = `%${telefono}%`;  
+        return connection.promise().query(query, [likeTelefono])
             .then(([rows]) => {
                 if (rows.length === 0) {
                     throw new Error('No se encontró un cliente con ese teléfono.');
                 }
-                console.log(`Cliente encontrado: ${JSON.stringify(rows[0])}`);
-                return rows[0];  // Retornamos el primer cliente encontrado
+                console.log(`Clientes encontrados: ${JSON.stringify(rows)}`);
+                return rows;  
             })
             .catch((err) => {
                 console.error('Error al buscar el cliente por teléfono:', err);

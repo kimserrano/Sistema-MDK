@@ -155,7 +155,7 @@
                 <div class="ticket">
                     <div>
                         <h5><strong>Ticket</strong></h5>
-                        <p><strong>Cliente: Marcos Toledo</strong></p>
+                        <p id="ClienteTicket"><strong>Cliente: </strong></p>
                         
                         <div class="productos-contenedor">
                             <div class="item">
@@ -180,8 +180,8 @@
                     <label for="buscarCliente" class="form-label">Buscar Cliente</label>
                     <div class="d-flex align-items-center">
                         <input type="text" id="buscarCliente" class="form-control me-2" placeholder="Ingrese el nombre del cliente" style="flex: 1;">
-                        <button class="btn btn-primary me-1 rounded">Buscar</button>
-                        <button class="btn btn-primary rounded">Limpiar</button>
+                        <button id="btnBuscarCliente"  class="btn btn-primary me-1 rounded">Buscar</button>
+                        <button id="btnLimpiarCliente" class="btn btn-primary rounded">Limpiar</button>
                     </div>
                 </div>
                 <div>
@@ -220,7 +220,8 @@
     <!-- Enlace a Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="controlSeleccionMedicinas.js"></script>
-    
+    <script src="controles/controlCliente.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 
