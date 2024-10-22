@@ -20,7 +20,7 @@ class ProductoDAO {
     }
 
     obtenerProductoPorId(id) {
-        const query = 'SELECT * FROM productos WHERE id = ?';
+        const query = 'SELECT * FROM producto WHERE id = ?';
         
         return new Promise((resolve, reject) => {
             connection.query(query, [id], (err, results) => {
@@ -28,12 +28,14 @@ class ProductoDAO {
                     console.error('Error al obtener producto:', err);
                     return reject(err);
                 }
+                console.log(results)
                 if (results.length > 0) {
                     const producto = new Producto(
-                        results[0].nombre,
-                        results[0].lote,
-                        results[0].cantidad,
-                        results[0].fechavencimiento
+                        results[0].Nombre,
+                        results[0].Lote,
+                        results[0].Cantidad,
+                        results[0].FechaVencimiento,
+                        results[0].Precio
                     );
                     resolve(producto);
                 } else {
@@ -44,8 +46,8 @@ class ProductoDAO {
     }
 
     actualizarProducto(id, producto) {
-        const query = 'UPDATE productos SET nombre = ?, lote = ?, cantidad = ?, fechavencimiento = ? WHERE id = ?';
-        const params = [producto.nombre, producto.lote, producto.cantidad, producto.fechaVencimiento, id];
+        const query = 'UPDATE producto SET nombre = ?, lote = ?, cantidad = ?, fechavencimiento = ?, precio = ? WHERE id = ?';
+        const params = [producto.nombre, producto.lote, producto.cantidad, producto.fechaVencimiento, producto.precio, id];
         
         return new Promise((resolve, reject) => {
             connection.query(query, params, (err, result) => {
@@ -64,7 +66,7 @@ class ProductoDAO {
     }
 
     eliminarProducto(id) {
-        const query = 'DELETE FROM productos WHERE id = ?';
+        const query = 'DELETE FROM producto WHERE id = ?';
         
         return new Promise((resolve, reject) => {
             connection.query(query, [id], (err, result) => {
@@ -83,7 +85,7 @@ class ProductoDAO {
     }
 
     obtenerTodosLosProductos() {
-        const query = 'SELECT * FROM productos';
+        const query = 'SELECT * FROM producto';
         
         return new Promise((resolve, reject) => {
             connection.query(query, (err, results) => {
@@ -92,10 +94,11 @@ class ProductoDAO {
                     return reject(err);
                 }
                 const productos = results.map(row => new Producto(
-                    row.nombre,
-                    row.lote,
-                    row.cantidad,
-                    row.fechavencimiento
+                    row.Nombre,
+                    row.Lote,
+                    row.Cantidad,
+                    row.FechaVencimiento,
+                    row.Precio
                 ));
                 resolve(productos);
             });

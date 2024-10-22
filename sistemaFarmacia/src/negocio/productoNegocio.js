@@ -7,7 +7,7 @@ class ProductoService {
     }
 
     validarFecha(fecha) {
-        const regexFecha = /^\d{4}-\d{2}-\d{2}$/; // Formato YYYY-MM-DD
+        const regexFecha = /^\d{4}-\d{2}-\d{2}$/;
         return regexFecha.test(fecha);
     }
 
@@ -114,6 +114,26 @@ class ProductoService {
             throw new Error('Error al obtener los productos: ' + error.message);
         }
     }
+    async reducirInventario(id, cantidadAReducir) {
+        if (!id || !this.validarNumeroPositivo(id)) {
+            throw new Error('ID de producto inválido.');
+        }
+        if (!this.validarNumeroPositivo(cantidadAReducir)) {
+            throw new Error('La cantidad a reducir debe ser un número positivo.');
+        }
+
+        const producto = await this.obtenerProductoPorId(id);
+
+        console.log(producto)
+        const nuevaCantidad = producto.cantidad - cantidadAReducir;
+        const productoActualizado = new Producto(producto.nombre, producto.lote, nuevaCantidad, producto.fechaVencimiento, producto.precio);
+
+        const resultado = await this.productoDAO.actualizarProducto(id, productoActualizado);
+        return resultado;
+
+    }
+
+
 }
 
 module.exports = new ProductoService();

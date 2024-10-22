@@ -21,7 +21,8 @@ CREATE TABLE Cliente (
 
 -- Tabla para Productos
 CREATE TABLE Producto (
-    Nombre VARCHAR(100) PRIMARY KEY,
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) UNIQUE,
     Lote VARCHAR(50),
     FechaVencimiento DATE,
     Cantidad INT,
