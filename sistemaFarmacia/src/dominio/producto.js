@@ -6,6 +6,7 @@ class Producto {
         this.fechaVencimiento = fechaVencimiento;
         this.precio = precio
     }
+     
   }
   
   module.exports = Producto;

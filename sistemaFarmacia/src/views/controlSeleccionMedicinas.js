@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function cargarProductos() {
     try {
         // Llamada a la capa de negocio para consultar productos
-        const productos = await ProductoNegocio.consultarProductos();
+        const productos = await ProductoNegocio.obtenerTodosLosProductos();
         console.log('Productos consultados:', productos);
         mostrarProductos(productos); // Llama a la función para mostrar productos
     } catch (error) {

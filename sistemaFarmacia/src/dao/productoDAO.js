@@ -19,7 +19,17 @@ class ProductoDAO {
             });
         });
     }
-
+    consultarTodos() {
+        const query = 'SELECT * FROM Producto';
+        return connection.promise().query(query)
+            .then(([rows]) => {
+                return rows.map(row => new Producto( row.Nombre, row.Lote, row.FechaVencimiento, row.Cantidad, row.Precio));
+            })
+            .catch((err) => {
+                console.error('Error al consultar los productos:', err);
+                throw err; // Propaga el error
+            });
+    }
     obtenerProductoPorId(id) {
         const query = 'SELECT * FROM producto WHERE id = ?';
         
