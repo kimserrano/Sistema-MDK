@@ -20,6 +20,42 @@ class clienteDAO {
                 throw new Error('No se pudo agregar el cliente. Inténtalo de nuevo.');
             });
     }
+
+     // Buscar cliente por teléfono
+     static buscarPorTelefono(telefono) {
+        const query = 'SELECT * FROM Cliente WHERE Telefono = ?';
+    
+        return connection.promise().query(query, [telefono])
+            .then(([rows]) => {
+                if (rows.length === 0) {
+                    throw new Error('No se encontró un cliente con ese teléfono.');
+                }
+                console.log(`Cliente encontrado: ${JSON.stringify(rows[0])}`);
+                return rows[0];  // Retornamos el primer cliente encontrado
+            })
+            .catch((err) => {
+                console.error('Error al buscar el cliente por teléfono:', err);
+                throw new Error('No se pudo encontrar el cliente. Inténtalo de nuevo.');
+            });
+    }
+
+    // Buscar cliente por nombre
+    static buscarPorNombre(nombre) {
+        const query = 'SELECT * FROM Cliente WHERE Nombre LIKE ?';
+    
+        return connection.promise().query(query, [`%${nombre}%`])
+            .then(([rows]) => {
+                if (rows.length === 0) {
+                    throw new Error('No se encontró un cliente con ese nombre.');
+                }
+                console.log(`Clientes encontrados: ${JSON.stringify(rows)}`);
+                return rows;  // Retornamos todos los clientes que coincidan con el nombre
+            })
+            .catch((err) => {
+                console.error('Error al buscar el cliente por nombre:', err);
+                throw new Error('No se pudo encontrar el cliente. Inténtalo de nuevo.');
+            });
+    }
     
 }
 
