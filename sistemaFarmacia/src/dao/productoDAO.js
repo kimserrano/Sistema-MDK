@@ -1,3 +1,4 @@
+
 const connection = require('../dbConexion/database'); 
 const Producto = require('../dominio/producto'); 
 
@@ -64,6 +65,7 @@ class ProductoDAO {
             });
         });
     }
+    
 
     eliminarProducto(id) {
         const query = 'DELETE FROM producto WHERE id = ?';
@@ -84,26 +86,7 @@ class ProductoDAO {
         });
     }
 
-    obtenerTodosLosProductos() {
-        const query = 'SELECT * FROM producto';
-        
-        return new Promise((resolve, reject) => {
-            connection.query(query, (err, results) => {
-                if (err) {
-                    console.error('Error al obtener productos:', err);
-                    return reject(err);
-                }
-                const productos = results.map(row => new Producto(
-                    row.Nombre,
-                    row.Lote,
-                    row.Cantidad,
-                    row.FechaVencimiento,
-                    row.Precio
-                ));
-                resolve(productos);
-            });
-        });
-    }
+    
 
     verificarProductoExistente(nombre) {
         const query = 'SELECT COUNT(*) AS existe FROM producto WHERE nombre = ?';
@@ -120,7 +103,5 @@ class ProductoDAO {
     }
     
 }
-
-
 
 module.exports = ProductoDAO;

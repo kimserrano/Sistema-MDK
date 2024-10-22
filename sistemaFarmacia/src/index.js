@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const url = require('url');
 const path = require('path');
 const { electron } = require('process');
@@ -13,6 +13,7 @@ require('electron-reload')(__dirname, {
 })
 //
 
+
 let mainWindow
 
 
@@ -23,6 +24,7 @@ app.on('ready', () => {
         webPreferences: {
             nodeIntegration: true, // Permite la integración con Node.js
             contextIsolation: false // Asegura la compatibilidad con el código actual
+
         }
     });
     mainWindow.removeMenu();
@@ -30,8 +32,18 @@ app.on('ready', () => {
         pathname: path.join(__dirname, 'views/login.html'),
         protocol: 'file',
         slashes: true
-    }))
 
+    }));
+
+    ipcMain.on('open-hola-window', () => {
+        mainWindow.loadURL(url.format({
+            pathname: path.join(__dirname, 'views/SeleccionMedicinas.html'),
+            protocol: 'file',
+            slashes: true
+        }));
+    });
+    
     mainWindow.webContents.openDevTools();
 });
+
 
