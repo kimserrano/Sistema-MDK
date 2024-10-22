@@ -1,5 +1,5 @@
 
-const ProductoNegocio = require('../negocio/ProductoNegocio'); // Asegúrate de que la ruta sea correcta
+const ProductoNegocio = require('../negocio/productoNegocio'); // Asegúrate de que la ruta sea correcta
 const productos = require('../dominio/producto');
 
 document.addEventListener("DOMContentLoaded", () => {

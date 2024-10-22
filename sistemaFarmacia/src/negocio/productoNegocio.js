@@ -2,6 +2,7 @@ const ProductoDAO = require('../dao/productoDAO');
 const Producto = require('../dominio/producto');
 
 class ProductoService {
+
     constructor() {
         this.productoDAO = new ProductoDAO();
     }
@@ -126,6 +127,7 @@ class ProductoService {
             throw new Error('Error al obtener los productos: ' + error.message);
         }
     }
+
     async reducirInventario(id, cantidadAReducir) {
         if (!id || !this.validarNumeroPositivo(id)) {
             throw new Error('ID de producto inválido.');
@@ -140,6 +142,7 @@ class ProductoService {
         if (producto.cantidad < cantidadAReducir) {
             throw new Error('La cantidad a reducir excede el inventario disponible.');
         }        
+        const nuevaCantidad = producto.cantidad - cantidadAReducir;
         const productoActualizado = new Producto(producto.nombre, producto.lote, nuevaCantidad, producto.fechaVencimiento, producto.precio);
 
         try {
