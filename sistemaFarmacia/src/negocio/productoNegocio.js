@@ -125,12 +125,17 @@ class ProductoService {
         const producto = await this.obtenerProductoPorId(id);
 
         console.log(producto)
-        const nuevaCantidad = producto.cantidad - cantidadAReducir;
+        if (producto.cantidad < cantidadAReducir) {
+            throw new Error('La cantidad a reducir excede el inventario disponible.');
+        }        
         const productoActualizado = new Producto(producto.nombre, producto.lote, nuevaCantidad, producto.fechaVencimiento, producto.precio);
 
-        const resultado = await this.productoDAO.actualizarProducto(id, productoActualizado);
-        return resultado;
-
+        try {
+            const resultado = await this.productoDAO.actualizarProducto(id, productoActualizado);
+            return resultado;
+        } catch (error) {
+            throw new Error('Error al reducir el inventario del producto: ' + error.message);
+        }        
     }
 
 
