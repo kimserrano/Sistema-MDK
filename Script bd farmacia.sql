@@ -23,7 +23,9 @@ CREATE TABLE Cliente (
 CREATE TABLE Producto (
     Nombre VARCHAR(100) PRIMARY KEY,
     Lote VARCHAR(50),
-    FechaVencimiento DATE
+    FechaVencimiento DATE,
+    Cantidad INT,
+    Precio FLOAT
 );
 
 -- Tabla para Ventas
