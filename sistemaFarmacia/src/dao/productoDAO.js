@@ -104,6 +104,23 @@ class ProductoDAO {
             });
         });
     }
+
+    verificarProductoExistente(nombre) {
+        const query = 'SELECT COUNT(*) AS existe FROM producto WHERE nombre = ?';
+        
+        return new Promise((resolve, reject) => {
+            connection.query(query, [nombre], (err, resultados) => {
+                if (err) {
+                    console.error('Error al verificar producto existente:', err);
+                    return reject(err);
+                }
+                resolve(resultados[0].existe > 0); 
+            });
+        });
+    }
+    
 }
+
+
 
 module.exports = ProductoDAO;
