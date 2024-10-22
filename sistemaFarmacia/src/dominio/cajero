@@ -1,0 +1,9 @@
+const connection = require('../dbConexion/database');
+class Cajero {
+    constructor(nombre) {
+        this.nombre = nombre;
+    }
+  }
+  
+  module.exports = Cajero;
+  
