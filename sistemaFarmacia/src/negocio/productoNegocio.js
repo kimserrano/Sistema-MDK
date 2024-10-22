@@ -22,7 +22,6 @@ class ProductoService {
     async crearProducto(data) {
         const { nombre, lote, cantidad, precio, fechaVencimiento } = data;
     
-        // Validaciones
         if (!this.validarTexto(nombre, 3, 50)) {
             throw new Error('El nombre del producto es inválido (entre 3 y 50 caracteres).');
         }
