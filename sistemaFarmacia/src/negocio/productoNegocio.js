@@ -120,7 +120,7 @@ class ProductoService {
 
     async obtenerTodosLosProductos() {
         try {
-            const productos = await this.productoDAO.obtenerTodosLosProductos();
+            const productos = await this.productoDAO.consultarTodos();
             return productos;
         } catch (error) {
             throw new Error('Error al obtener los productos: ' + error.message);
