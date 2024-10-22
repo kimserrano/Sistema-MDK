@@ -1,7 +1,5 @@
 
 const ClienteNegocio = require('../negocio/ClienteNegocio');
-const Cliente = require('../dominio/Cliente');
-
 
 document.addEventListener("DOMContentLoaded", () => {
     const nombreInput = document.getElementById("nombre");
@@ -14,14 +12,27 @@ document.addEventListener("DOMContentLoaded", () => {
         // Obtener los valores de los inputs
         const nombre = nombreInput.value.trim();
         const telefono = telefonoInput.value.trim();
-       
-        const nuevoCliente = new Cliente(telefono, nombre);
 
-    await ClienteNegocio.agregarCliente(telefono, nombre);
-    
-    
-        // Limpiar el formulario después de enviar los datos
-        form.reset();
-        
+        try {
+            // Intentar agregar el cliente
+            await ClienteNegocio.agregarCliente(telefono, nombre);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Cliente agregado',
+                text: 'El cliente ha sido agregado exitosamente.',
+            });
+
+            // Limpiar el formulario después de enviar los datos
+            form.reset();
+        } catch (error) {
+            // Mostrar el error como una alerta
+          Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message,
+            });
+        }
+      
     });
 });

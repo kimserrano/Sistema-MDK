@@ -2,7 +2,7 @@ const connection = require('../dbConexion/database');
 const Cliente = require('../dominio/Cliente');
 class clienteDAO {
     static insertar(cliente) {
-        // Asegúrate de que el argumento sea una instancia de Cliente
+        // el argumento tiene que ser un Cliente
         if (!(cliente instanceof Cliente)) {
             throw new Error('El argumento debe ser una instancia de Cliente');
         }
@@ -17,7 +17,7 @@ class clienteDAO {
             })
             .catch((err) => {
                 console.error('Error al insertar el cliente:', err);
-                throw err;  // Propagamos el error
+                throw new Error('No se pudo agregar el cliente. Inténtalo de nuevo.');
             });
     }
     
