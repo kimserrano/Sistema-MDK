@@ -1,3 +1,4 @@
+
 const connection = require('../dbConexion/database'); 
 const Producto = require('../dominio/producto'); 
 
@@ -18,7 +19,17 @@ class ProductoDAO {
             });
         });
     }
-
+    consultarTodos() {
+        const query = 'SELECT * FROM Producto';
+        return connection.promise().query(query)
+            .then(([rows]) => {
+                return rows.map(row => new Producto( row.Nombre, row.Lote, row.FechaVencimiento, row.Cantidad, row.Precio));
+            })
+            .catch((err) => {
+                console.error('Error al consultar los productos:', err);
+                throw err; // Propaga el error
+            });
+    }
     obtenerProductoPorId(id) {
         const query = 'SELECT * FROM producto WHERE id = ?';
         
@@ -64,6 +75,7 @@ class ProductoDAO {
             });
         });
     }
+    
 
     eliminarProducto(id) {
         const query = 'DELETE FROM producto WHERE id = ?';
@@ -84,26 +96,7 @@ class ProductoDAO {
         });
     }
 
-    obtenerTodosLosProductos() {
-        const query = 'SELECT * FROM producto';
-        
-        return new Promise((resolve, reject) => {
-            connection.query(query, (err, results) => {
-                if (err) {
-                    console.error('Error al obtener productos:', err);
-                    return reject(err);
-                }
-                const productos = results.map(row => new Producto(
-                    row.Nombre,
-                    row.Lote,
-                    row.Cantidad,
-                    row.FechaVencimiento,
-                    row.Precio
-                ));
-                resolve(productos);
-            });
-        });
-    }
+    
 
     verificarProductoExistente(nombre) {
         const query = 'SELECT COUNT(*) AS existe FROM producto WHERE nombre = ?';
@@ -120,7 +113,5 @@ class ProductoDAO {
     }
     
 }
-
-
 
 module.exports = ProductoDAO;
