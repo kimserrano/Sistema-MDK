@@ -44,7 +44,7 @@ class ProductoService {
             const resultado = await this.productoDAO.crearProducto(nuevoProducto);
             return resultado;
         } catch (error) {
-            throw new Error('Error al crear el producto');
+            throw new Error(error.message);
         }
     }
 

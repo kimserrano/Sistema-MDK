@@ -4,20 +4,35 @@ const Producto = require('../dominio/producto');
 class ProductoDAO {
     
     crearProducto(producto) {
-        const query = 'INSERT INTO producto (nombre, lote, cantidad, fechavencimiento, precio) VALUES (?, ?, ?, ?, ?)';
-        const params = [producto.nombre, producto.lote, producto.cantidad, producto.fechaVencimiento, producto.precio];
+        // Primero, verifica si el nombre del producto ya existe
+        const verificarQuery = 'SELECT COUNT(*) AS existe FROM producto WHERE nombre = ?';
         
         return new Promise((resolve, reject) => {
-            connection.query(query, params, (err, result) => {
+            connection.query(verificarQuery, [producto.nombre], (err, resultados) => {
                 if (err) {
-                    console.error('Error al crear producto:', err);
+                    console.error('Error al verificar producto existente:', err);
                     return reject(err);
                 }
-                console.log('Producto creado exitosamente');
-                resolve(result);
+                
+                if (resultados[0].existe > 0) {
+                    return reject(new Error('El producto con este nombre ya existe.'));
+                }
+    
+                const query = 'INSERT INTO producto (nombre, lote, cantidad, fechavencimiento, precio) VALUES (?, ?, ?, ?, ?)';
+                const params = [producto.nombre, producto.lote, producto.cantidad, producto.fechaVencimiento, producto.precio];
+                
+                connection.query(query, params, (err, result) => {
+                    if (err) {
+                        console.error('Error al crear producto:', err);
+                        return reject(err);
+                    }
+                    console.log('Producto creado exitosamente');
+                    resolve(result);
+                });
             });
         });
     }
+    
 
     obtenerProductoPorId(id) {
         const query = 'SELECT * FROM producto WHERE id = ?';
