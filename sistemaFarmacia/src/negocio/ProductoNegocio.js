@@ -140,6 +140,7 @@ class ProductoService {
         if (producto.cantidad < cantidadAReducir) {
             throw new Error('La cantidad a reducir excede el inventario disponible.');
         }        
+        const nuevaCantidad = producto.cantidad - cantidadAReducir;
         const productoActualizado = new Producto(producto.nombre, producto.lote, nuevaCantidad, producto.fechaVencimiento, producto.precio);
 
         try {
