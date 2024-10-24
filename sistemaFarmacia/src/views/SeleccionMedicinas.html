@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDK Medicinas</title>
+    <!-- Enlace de Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins */
+            font-weight: 400;
+            color: black;
+            background-color: #B6D0E1;
+            height: 100vh;
+            overflow: hidden;
+            /* Para evitar que se vea algún scroll inesperado */
+        }
+
+        .container-fluid {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .ticket {
+            background-color: #2f4154;
+            color: white;
+            padding: 20px;
+            width: 25%;
+            /* Abarca 1/4 de la pantalla */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            /* Asegura que cubre toda la altura de la pantalla */
+        }
+
+        .ticket h5 {
+            margin-bottom: 1rem;
+        }.ticket h5 {
+            text-align: center; /* Centra el título */
+            margin-bottom: 1rem;
+            font-size: 1.5rem; /* Tamaño de fuente más grande */
+        }
+
+        .ticket p {
+            text-align: center; /* Centra el nombre del cliente */
+            margin-bottom: 1rem;
+            font-size: 1.2rem; /* Tamaño de fuente más grande */
+        }
+
+        .ticket .item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        /* Sección derecha general */
+        .products-section-wrapper {
+            padding: 20px;
+            width: 75%;
+            /* Abarca el 75% restante */
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .products-section-wrapper h2{
+            font-weight: 700;
+            text-align: center; /* Centra el título */
+        }
+        /* Parte superior: 45% con el título */
+        .products-section-top {
+            height: 45%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Centra verticalmente */
+            padding: 15px;
+            /* Espaciado interno */
+        }
+
+
+        /* Parte inferior: tabla con scroll, ocupa el 55% */
+        .products-section-bottom {
+            border: 2px solid #90AFC4;
+            /* Borde azul oscuro */
+            border-radius: 10px;
+            background-color: #90AFC4;
+            padding: 15px;
+            height: 55%;
+            /* Altura definida al 55% */
+            overflow-y: auto;
+            /* Activar scroll vertical */
+        }
+
+        /* Estilo para el scroll */
+        .products-section-bottom::-webkit-scrollbar {
+            width: 12px;
+            /* Ancho del scrollbar */
+        }
+
+        .products-section-bottom::-webkit-scrollbar-track {
+            background: #5F84A1;
+            /* Color de fondo del track */
+            border-radius: 10px;
+            /* Bordes redondeados */
+        }
+
+        .products-section-bottom::-webkit-scrollbar-thumb {
+            background: #1A4568;
+            /* Color del thumb */
+            border-radius: 10px;
+            /* Bordes redondeados */
+        }
+
+
+        .product {
+            background-color: #F9F9F9;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .product h6 {
+            margin-bottom: 8px;
+        }
+
+        .product .btn {
+            margin-top: 1px;
+        }
+
+        .btn-primary {
+            background-color: #2f4154;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- Columna del ticket -->
+        
+                
+           
+                <div class="ticket">
+                    <div>
+                        <h5><strong>Ticket</strong></h5>
+                        <p id="ClienteTicket"><strong>Cliente: </strong></p>
+                        
+                        <div class="productos-contenedor">
+                            <div class="item">
+                            </div>
+                        </div> <!-- Contenedor para los productos -->
+                
+                    </div>
+                    <div class="mt-auto"> <!-- Mueve los elementos hacia la parte inferior -->
+                        
+                    </div>
+                    <div class="d-grid mt-3">
+                        <button class="btn btn-primary me-1 rounded">Pagar</button>
+                    </div>
+                </div>
+                
+        <!-- Sección de productos y título -->
+        <div class="products-section-wrapper">
+            <!-- Parte superior: Título MDK Medicinas -->
+            <h2><strong>MDK MEDICINAS</strong></h2>
+            <div class="products-section-top">
+                <div class="mb-4">
+                    <label for="buscarCliente" class="form-label">Buscar Cliente</label>
+                    <div class="d-flex align-items-center">
+                        <input type="text" id="buscarCliente" class="form-control me-2" placeholder="Ingrese el nombre del cliente" style="flex: 1;">
+                        <button id="btnBuscarCliente"  class="btn btn-primary me-1 rounded">Buscar</button>
+                        <button id="btnLimpiarCliente" class="btn btn-primary rounded">Limpiar</button>
+                    </div>
+                </div>
+                <div>
+                    <label for="buscarProducto" class="form-label">Buscar Producto</label>
+                    <div class="d-flex align-items-center">
+                        <input type="text" id="buscarProducto" class="form-control me-2" placeholder="Ingrese el nombre del producto" style="flex: 1;">
+                        <button class="btn btn-primary rounded">Buscar</button>
+                    </div>
+                </div>
+            </div>
+            
+
+
+            <!-- Parte inferior: Tabla con scroll -->
+            <div class="products-section-bottom">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="product">
+                            <h6>Paracetamol</h6>
+                            <p>$20</p>
+                            <div class="d-flex justify-content-center">
+                                <button class="btn btn-outline-primary">-</button>
+                                <input type="text" value="2" class="form-control mx-2 text-center" style="width: 50px;">
+                                <button class="btn btn-outline-primary">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <!-- Agrega más productos según sea necesario -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enlace a Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="controlSeleccionMedicinas.js"></script>
+    <script src="controles/controlCliente.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const url = require('url');
 const path = require('path');
 const { electron } = require('process');
@@ -13,32 +13,37 @@ require('electron-reload')(__dirname, {
 })
 //
 
+
 let mainWindow
+
+
 app.on('ready', () => {
-    mainWindow = new BrowserWindow({});
+    mainWindow = new BrowserWindow({
+        width: 800, // Tamaño personalizado
+        height: 600,
+        webPreferences: {
+            nodeIntegration: true, // Permite la integración con Node.js
+            contextIsolation: false // Asegura la compatibilidad con el código actual
+
+        }
+    });
     mainWindow.removeMenu();
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'views/login.html'),
+        pathname: path.join(__dirname, 'views/SeleccionMedicinas.html'),
         protocol: 'file',
         slashes: true
-    }))
 
+    }));
 
+    ipcMain.on('open-hola-window', () => {
+        mainWindow.loadURL(url.format({
+            pathname: path.join(__dirname, 'views/SeleccionMedicinas.html'),
+            protocol: 'file',
+            slashes: true
+        }));
+    });
+    
+    mainWindow.webContents.openDevTools();
 });
 
 
-// src/main.js o donde necesites usar la clase Cajero
-
-const CajeroNegocio = require('./negocio/CajeroNegocio');
-
-async function agregarCajero(nombre) {
-    try {
-        // Llamada a la capa de negocio
-        await CajeroNegocio.agregarCajero(nombre);
-    } catch (error) {
-        console.error('Error al agregar el cajero desde el index:', error);
-    }
-}
-
-// Ejemplo de uso: agregar un cajero llamado "Juan Pérez"
-agregarCajero('kk').catch(console.error);
