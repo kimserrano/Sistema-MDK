@@ -1,5 +1,5 @@
 const cajeroDAO = require('../dao/cajeroDAO');
-const Cajero = require('../dominio/Cajero');
+const Cajero = require('../dominio/cajero');
 
 class CajeroNegocio {
     static async agregarCajero(nombre) {
