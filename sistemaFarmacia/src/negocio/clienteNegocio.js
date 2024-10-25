@@ -1,5 +1,5 @@
 const clienteDAO = require('../dao/clienteDAO');
-const Cliente = require('../dominio/Cliente');
+const Cliente = require('../dominio/cliente');
 
 class ClienteNegocio {
     static async agregarCliente(telefono, nombre) {

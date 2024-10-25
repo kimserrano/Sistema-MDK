@@ -29,19 +29,12 @@ app.on('ready', () => {
     });
     mainWindow.removeMenu();
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'views/SeleccionMedicinas.html'),
+        pathname: path.join(__dirname, 'views/nuevoProducto.html'),
         protocol: 'file',
         slashes: true
 
     }));
 
-    ipcMain.on('open-hola-window', () => {
-        mainWindow.loadURL(url.format({
-            pathname: path.join(__dirname, 'views/SeleccionMedicinas.html'),
-            protocol: 'file',
-            slashes: true
-        }));
-    });
     
     mainWindow.webContents.openDevTools();
 });
