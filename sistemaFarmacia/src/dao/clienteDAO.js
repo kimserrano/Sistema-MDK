@@ -1,5 +1,5 @@
 const connection = require('../dbConexion/database');
-const Cliente = require('../dominio/Cliente');
+const Cliente = require('../dominio/cliente');
 class clienteDAO {
     static insertar(cliente) {
         // el argumento tiene que ser un Cliente

@@ -1,4 +1,4 @@
-const ClienteNegocio = require('../src/negocio/ClienteNegocio');
+const ClienteNegocio = require('../src/negocio/clienteNegocio');
 const clienteDAO = require('../src/dao/clienteDAO');
 
 // Mockear las funciones de clienteDAO
