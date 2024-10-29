@@ -112,7 +112,37 @@ describe('ProductoNegocio', () => {
         });
     });
 
-
+    describe('obtenerProductosPorCriterio', () => {
+        it('debería lanzar un error si el criterio de búsqueda es inválido', async () => {
+            await expect(productoNegocio.obtenerProductosPorCriterio(null)).rejects.toThrow('Criterio de búsqueda inválido.');
+            await expect(productoNegocio.obtenerProductosPorCriterio('')).rejects.toThrow('Criterio de búsqueda inválido.');
+        });
+    
+        it('debería obtener productos correctamente cuando se proporciona un criterio válido', async () => {
+            const criterio = 'Producto1';
+            const productosEsperados = [
+                { nombre: 'Producto1', lote: 'Lote1', cantidad: 10, precio: 100, fechaVencimiento: '2024-12-31' },
+            ];
+    
+            // Simula la implementación de obtenerProductosPorCriterio
+            mockProductoDAO.obtenerProductosPorCriterio.mockResolvedValue(productosEsperados);
+    
+            const productosObtenidos = await productoNegocio.obtenerProductosPorCriterio(criterio);
+    
+            expect(productosObtenidos).toEqual(productosEsperados);
+            expect(mockProductoDAO.obtenerProductosPorCriterio).toHaveBeenCalledWith(criterio); // Verifica que se llamó con el criterio correcto
+        });
+    
+        it('debería lanzar un error si ocurre un problema al obtener los productos', async () => {
+            const criterio = 'Producto1';
+            const mensajeError = 'Error en la base de datos';
+    
+            // Simula un error en obtenerProductosPorCriterio
+            mockProductoDAO.obtenerProductosPorCriterio.mockRejectedValue(new Error(mensajeError));
+    
+            await expect(productoNegocio.obtenerProductosPorCriterio(criterio)).rejects.toThrow('Error al obtener los productos: ' + mensajeError);
+        });
+    });
     describe('actualizarProducto', () => {
         it('debería lanzar un error si el ID es inválido', async () => {
             await expect(productoNegocio.actualizarProducto(null, {})).rejects.toThrow('ID de producto inválido.');

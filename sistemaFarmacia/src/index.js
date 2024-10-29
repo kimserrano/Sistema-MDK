@@ -29,7 +29,7 @@ app.on('ready', () => {
     });
     mainWindow.removeMenu();
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'views/nuevoProducto.html'),
+        pathname: path.join(__dirname, 'views/seleccionMedicinas.html'),
         protocol: 'file',
         slashes: true
 

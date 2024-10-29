@@ -23,7 +23,7 @@ class ProductoDAO {
         const query = 'SELECT * FROM Producto';
         return connection.promise().query(query)
             .then(([rows]) => {
-                return rows.map(row => new Producto( row.Nombre, row.Lote, row.FechaVencimiento, row.Cantidad, row.Precio));
+                return rows.map(row => new Producto( row.Nombre, row.Lote,row.Cantidad ,row.FechaVencimiento , row.Precio));
             })
             .catch((err) => {
                 console.error('Error al consultar los productos:', err);
@@ -56,6 +56,48 @@ class ProductoDAO {
         });
     }
 
+    obtenerProductosPorCriterio(criterio) {
+        return new Promise((resolve, reject) => {
+            let searchValue;
+            let query;
+    
+            // Verifica si el criterio comienza con "LOTE"
+            if (criterio.startsWith("LOTE")) {
+                // Si es así, quitar "LOTE" y preparar el valor de búsqueda solo para Lote
+                const loteValue = criterio.replace("LOTE", "").trim();
+                searchValue = `%${loteValue}%`; // Se aplican los % para LIKE
+                query = `
+                    SELECT * FROM producto 
+                    WHERE Lote LIKE ?
+                `;
+            } else {
+                searchValue = `%${criterio}%`; // Aplica el % para LIKE en otros casos
+                query = `
+                    SELECT * FROM producto 
+                    WHERE id LIKE ? OR Nombre LIKE ? OR Lote LIKE ?
+                `;
+            }
+    
+            const values = criterio.startsWith("LOTE") ? [searchValue] : [searchValue, searchValue, searchValue];
+    
+            connection.query(query, values, (err, results) => {
+                if (err) {
+                    console.error('Error en la consulta:', err);
+                    return reject(err);
+                }
+    
+                const productos = results.map(result => new Producto(
+                    result.Nombre,
+                    result.Lote,
+                    result.Cantidad,
+                    result.FechaVencimiento,
+                    result.Precio
+                ));
+    
+                resolve(productos);
+            });
+        });
+    }
     actualizarProducto(id, producto) {
         const query = 'UPDATE producto SET nombre = ?, lote = ?, cantidad = ?, fechavencimiento = ?, precio = ? WHERE id = ?';
         const params = [producto.nombre, producto.lote, producto.cantidad, producto.fechaVencimiento, producto.precio, id];
