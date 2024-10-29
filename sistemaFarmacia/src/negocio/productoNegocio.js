@@ -118,6 +118,21 @@ class ProductoService {
             throw new Error('Error al eliminar el producto: ' + error.message);
         }
     }
+    async obtenerProductosPorCriterio(criterio) {
+        if (!criterio) {
+            throw new Error('Criterio de búsqueda inválido.');
+        }
+    
+        try {
+            const productos = await this.productoDAO.obtenerProductosPorCriterio(criterio);
+            
+           
+    
+            return productos;
+        } catch (error) {
+            throw new Error('Error al obtener los productos: ' + error.message);
+        }
+    }
 
     async obtenerTodosLosProductos() {
         try {
