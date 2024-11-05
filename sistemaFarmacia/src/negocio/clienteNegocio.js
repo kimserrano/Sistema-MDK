@@ -21,6 +21,12 @@ class ClienteNegocio {
                 throw new Error('El teléfono del cliente debe tener al menos 10 caracteres.');
             }
 
+            const existe = await clienteDAO.existe(telefono)
+
+            if(existe.length > 0){
+                throw new Error('El numero de telefono ya existe');
+            }
+
             const nuevoCliente = new Cliente(telefono, nombre);
             await clienteDAO.insertar(nuevoCliente);
         } catch (error) {

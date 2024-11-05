@@ -106,6 +106,23 @@ class clienteDAO {
             throw new Error('No se pudo obtener el historial de compras. Inténtalo de nuevo.');
         }
     }
+
+    static existe(telefono) {
+        const query = 'SELECT * FROM Cliente WHERE Telefono LIKE ?';
+        const likeTelefono = `%${telefono}%`;
+        return connection.promise().query(query, [likeTelefono])
+            .then(([rows]) => {
+                if (rows.length === 0) {
+                    return [];
+                }
+                return rows;
+            })
+            .catch((err) => {
+                console.error('Error al buscar el cliente por teléfono:', err);
+                throw new Error('No se pudo encontrar el cliente. Inténtalo de nuevo.');
+            });
+    }
+
 }
 
 module.exports = clienteDAO;
