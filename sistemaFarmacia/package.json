@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron src/index.js"
+    "start": "electron src/index.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +13,12 @@
   "dependencies": {
     "electron": "^33.0.1",
     "electron-reload": "^2.0.0-alpha.1",
-    "mysql2": "^3.11.3"
+    "moment": "^2.30.1",
+    "mysql2": "^3.11.3",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.15"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
