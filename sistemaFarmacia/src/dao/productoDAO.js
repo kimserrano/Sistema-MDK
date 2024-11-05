@@ -1,7 +1,6 @@
 
 const connection = require('../dbConexion/database');
 const Producto = require('../dominio/producto');
-const moment = require('moment');
 
 class ProductoDAO {
 
