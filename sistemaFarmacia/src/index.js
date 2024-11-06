@@ -31,7 +31,7 @@ app.on('ready', () => {
     });
     mainWindow.removeMenu();
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'views/clientes.html'),
+        pathname: path.join(__dirname, 'views/inventario.html'),
         protocol: 'file',
         slashes: true
 
