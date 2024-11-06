@@ -2,8 +2,6 @@ const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const productoNegocio = require('../negocio/productoNegocio');
 
-console.log('qondaentre');
-
 // Configuración del transportador de nodemailer
 const transporter = nodemailer.createTransport({
     service: 'gmail',
