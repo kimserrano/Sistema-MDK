@@ -7,7 +7,9 @@ jest.mock('../src/dao/clienteDAO', () => ({
     buscarPorTelefono: jest.fn(),
     buscarPorNombre: jest.fn(),
     existe: jest.fn(),
-    getClienteCompras: jest.fn()
+    getClienteCompras: jest.fn(),
+    actualizarNombrePorTelefono: jest.fn(),
+    eliminarPorTelefono: jest.fn()
 }));
 
 describe('ClienteNegocio', () => {
@@ -143,4 +145,75 @@ describe('ClienteNegocio', () => {
             expect(resultado.marcasConDescuento).toEqual(['Marca1']);
         });
     });
+
+    describe('actualizarNombrePorTelefono', () => {
+        test('debería actualizar el nombre de un cliente correctamente', async () => {
+            const telefono = '1234567890';
+            const nuevoNombre = 'Carlos';
+    
+            clienteDAO.actualizarNombrePorTelefono.mockResolvedValue({ affectedRows: 1 });
+    
+            const resultado = await clienteDAO.actualizarNombrePorTelefono(telefono, nuevoNombre);
+    
+            expect(clienteDAO.actualizarNombrePorTelefono).toHaveBeenCalledWith(telefono, nuevoNombre);
+            expect(resultado).toEqual({ affectedRows: 1 });
+        });
+    
+        test('debería lanzar un error si el cliente no existe', async () => {
+            const telefono = '1234567890';
+            const nuevoNombre = 'Carlos';
+        
+            clienteDAO.actualizarNombrePorTelefono.mockRejectedValue(new Error('No se encontró un cliente con ese teléfono para actualizar.'));
+        
+            await expect(clienteDAO.actualizarNombrePorTelefono(telefono, nuevoNombre))
+                .rejects
+                .toThrow('No se encontró un cliente con ese teléfono para actualizar.');
+        
+            expect(clienteDAO.actualizarNombrePorTelefono).toHaveBeenCalledWith(telefono, nuevoNombre);
+        });
+        
+    
+        test('debería lanzar un error si ocurre un problema en el DAO', async () => {
+            const telefono = '1234567890';
+            const nuevoNombre = 'Carlos';
+            const errorMock = new Error('Error al actualizar el cliente');
+    
+            clienteDAO.actualizarNombrePorTelefono.mockRejectedValue(errorMock);
+    
+            await expect(clienteDAO.actualizarNombrePorTelefono(telefono, nuevoNombre))
+                .rejects.toThrow('Error al actualizar el cliente');
+    
+            expect(clienteDAO.actualizarNombrePorTelefono).toHaveBeenCalledWith(telefono, nuevoNombre);
+        });
+    });
+    
+    describe('eliminar', () => {
+        test('debería lanzar un error si el cliente no existe', async () => {
+            const telefono = '1234567990';
+        
+            clienteDAO.eliminarPorTelefono.mockRejectedValue(new Error('No se encontró un cliente con ese teléfono para eliminar.'));
+        
+            await expect(clienteDAO.eliminarPorTelefono(telefono))
+                .rejects
+                .toThrow('No se encontró un cliente con ese teléfono para eliminar.');
+        
+            expect(clienteDAO.eliminarPorTelefono).toHaveBeenCalledWith(telefono);
+        });
+
+        test('debería eliminar el cliente correctamente si existe', async () => {
+            const telefono = '1234567890';
+        
+            clienteDAO.eliminarPorTelefono.mockResolvedValue({ affectedRows: 1 });
+        
+            await expect(clienteDAO.eliminarPorTelefono(telefono))
+                .resolves
+                .not
+                .toThrow();
+        
+            expect(clienteDAO.eliminarPorTelefono).toHaveBeenCalledWith(telefono);
+        });
+        
+        
+    });
+
 });
