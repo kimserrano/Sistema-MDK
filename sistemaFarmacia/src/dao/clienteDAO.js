@@ -118,8 +118,22 @@ class clienteDAO {
                 return rows;
             })
             .catch((err) => {
-                console.error('Error al buscar el cliente por teléfono:', err);
                 throw new Error('No se pudo encontrar el cliente. Inténtalo de nuevo.');
+            });
+    }
+
+    static async actualizarNombrePorTelefono(telefono, nuevoNombre) {
+        const query = 'UPDATE Cliente SET Nombre = ? WHERE Telefono = ?';
+    
+        return connection.promise().query(query, [nuevoNombre, telefono])
+            .then(([result]) => {
+                if (result.affectedRows === 0) {
+                    throw new Error('No se encontró un cliente con ese teléfono para actualizar.');
+                }
+                return result;
+            })
+            .catch((err) => {
+                throw new Error(err);
             });
     }
 
