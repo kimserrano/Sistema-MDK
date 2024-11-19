@@ -14,6 +14,11 @@
 </head>
 
 <body>
+    <div class="back-button">
+        <button id="btnRegresar" class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-2"></i> Regresar
+        </button>
+    </div>
 
     <div class="container-form">
         <h2 class="text-center">Registrar nuevo usuario</h2>
@@ -47,9 +52,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Entrar</button>
-
-            <p class="text-center mt-3">¿Ya tiene cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+            <button type="submit" class="btn btn-primary w-100">Registrar</button>
         </form>
     </div>
 
@@ -64,6 +67,11 @@
             tooltipTriggerList.forEach(function (tooltipTriggerEl) {
                 new bootstrap.Tooltip(tooltipTriggerEl);
             });
+        });
+    </script>
+     <script>
+        document.getElementById('btnRegresar').addEventListener('click', function () {
+            window.history.back(); // Regresa al HTML anterior en el historial
         });
     </script>
 </body>
