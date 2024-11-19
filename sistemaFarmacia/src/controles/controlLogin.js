@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const resultado = await CajeroAdminNegocio.iniciarSesionTrabajador(usuario, contra);
             console.log(resultado);
             if (resultado.tipo === 'cajero') {
+                localStorage.setItem('cajeroActivo', JSON.stringify(resultado.usuario));
                 window.location.href = '../views/seleccionMedicinas.html';
             } else if (resultado.tipo === 'administrador') {
                 window.location.href = '../views/inventario.html';
