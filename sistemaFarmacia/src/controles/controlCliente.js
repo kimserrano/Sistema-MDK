@@ -1,5 +1,5 @@
 const ClienteNegocio = require('../negocio/clienteNegocio');
-
+let clienteSeleccionado = null;
 document.addEventListener("DOMContentLoaded", () => {
     const nombreInput = document.getElementById("nombre");
     const telefonoInput = document.getElementById("telefono");
@@ -132,16 +132,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const listaClientes = document.getElementById("listaClientes");
         listaClientes.addEventListener("click", (event) => {
-            const clienteSeleccionado = event.target.closest('li');
-            if (clienteSeleccionado) {
-                const nombre = clienteSeleccionado.getAttribute("data-nombre");
-                const telefono = clienteSeleccionado.getAttribute("data-telefono");
-
+            clienteElement  = event.target.closest('li');
+            if (clienteElement ) {
+                const nombre = clienteElement .getAttribute("data-Nombre");
+                const telefono = clienteElement .getAttribute("data-Telefono");
+                const cliente  = { nombre, telefono };
+                setClienteSeleccionado(cliente); 
                 clienteTicket.innerHTML = `<strong>Cliente: ${nombre}</strong>`;
-
                 modalClientes.hide();
                 document.getElementById('modalClientes').remove();
             }
         });
     }
 });
+
+function setClienteSeleccionado(cliente) {
+    clienteSeleccionado = cliente;
+}
+
+function getClienteSeleccionado() {
+    return clienteSeleccionado;
+}
+
+
+
+module.exports = { getClienteSeleccionado, setClienteSeleccionado };

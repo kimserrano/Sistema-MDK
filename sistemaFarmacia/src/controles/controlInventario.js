@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Agregar el evento al botón de búsqueda
     obtenerTodosLosProductos();
     const buscarInput = document.getElementById('buscarProducto');
-    const buscarBtn = document.querySelector('.btn-primary.rounded'); // Asegúrate de que este selector coincida con tu botón de búsqueda
+    const buscarBtn = document.querySelector('.btn-primary.rounded'); 
 
     // Ejecuta la búsqueda cada vez que se escribe en el campo de texto
     buscarInput.addEventListener('input', buscarProductos);

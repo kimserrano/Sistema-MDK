@@ -3,6 +3,7 @@ const ProductoNegocio = require('./negocio/productoNegocio');
 const ClienteNegocio = require('./negocio/clienteNegocio');
 const url = require('url');
 const path = require('path');
+const fs = require('fs');
 const { electron } = require('process');
 require('./dbConexion/database');
 
@@ -36,8 +37,8 @@ app.on('ready', () => {
         slashes: true
 
     }));
-    
-    
+
+
     mainWindow.webContents.openDevTools();
 });
 
@@ -88,3 +89,25 @@ ipcMain.on('open-historial', (event, telefono) => {
     });
 
 });
+
+// Recibir la solicitud de guardar el ticket
+ipcMain.on('guardar-ticket', (event, ticketContenido) => {
+
+    const ticketFolder = path.join(__dirname, '..', '..', 'ticket'); 
+
+    if (!fs.existsSync(ticketFolder)) {
+        fs.mkdirSync(ticketFolder, { recursive: true });
+    }
+
+    const nombreArchivo = `ticket_${Date.now()}.txt`;
+    const rutaArchivo = path.join(ticketFolder, nombreArchivo);
+
+    fs.writeFile(rutaArchivo, ticketContenido, (err) => {
+        if (err) {
+            event.reply('ticket-guardado', { success: false });
+        } else {
+            event.reply('ticket-guardado', { success: true });
+        }
+    });
+});
+
