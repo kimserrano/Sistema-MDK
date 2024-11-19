@@ -1,0 +1,14 @@
+Ticket de Compra
+
+Cliente: público en general
+
+Cajero: lokis
+
+Loratadina 10mg $6.50 x 1
+Omeprazol 20mg $25.00 x 4
+Vitamina C 500mg $12.00 x 1
+Losartán 50mg $22.00 x 1
+
+Total: $140.50
+IVA: $22.48
+Total con IVA: $162.98

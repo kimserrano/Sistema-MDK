@@ -19,22 +19,44 @@ function calcularDiasHastaVencimiento(fechaVencimiento) {
 
 // Función para enviar correo con productos
 async function enviarCorreo(productos) {
-    const listaProductos = productos.map(p => {
+
+     // Crear la tabla HTML
+     let tablaProductos = `
+     <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
+         <thead>
+             <tr>
+                 <th>Producto</th>
+                 <th>Fecha de Vencimiento</th>
+                 <th>Días hasta Vencimiento</th>
+             </tr>
+         </thead>
+         <tbody>
+ `;
+
+   productos.forEach(p => {
         const diasDiferencia = calcularDiasHastaVencimiento(p.fechaVencimiento);
+        tablaProductos += `
+            <tr>
+                <td>${p.nombre}</td>
+                <td>${new Date(p.fechaVencimiento).toLocaleDateString()}</td>
+                <td>${diasDiferencia > 0 ? `Caduca en ${diasDiferencia} días` : `Caducado hace ${Math.abs(diasDiferencia)} días`}</td>
+            </tr>
+        `;
+    });
 
-        if (diasDiferencia > 0) {
-            return `${p.nombre}: caduca en ${diasDiferencia} días`;
-        } else {
-            return `${p.nombre}: caducado hace ${Math.abs(diasDiferencia)} días`;
-        }
-
-    }).join('\n');
+    tablaProductos += `
+            </tbody>
+        </table>
+    `;
 
     const mailOptions = {
         from: 'mdkmedicinas@gmail.com',
         to: 'mdkmedicinas@gmail.com',
         subject: 'Productos a punto de vencer',
-        text: `Lista de productos próximos a caducar o caducados:\n\n${listaProductos}`
+       html: `
+            <p>Lista de productos próximos a caducar o caducados:</p>
+            ${tablaProductos}
+        `
     };
 
     try {
