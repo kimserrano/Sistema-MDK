@@ -94,11 +94,15 @@ class ProductoDAO {
                 }
 
                 const productos = results.map(result => new Producto(
+                    
                     result.Nombre,
                     result.Lote,
                     result.Cantidad,
                     result.FechaVencimiento,
-                    result.Precio
+                    result.Precio,
+                    null,
+                    null,
+                    result.id
                 ));
 
                 resolve(productos);

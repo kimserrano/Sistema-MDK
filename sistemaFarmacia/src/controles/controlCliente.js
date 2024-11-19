@@ -1,4 +1,4 @@
-const ClienteNegocio = require('../negocio/clienteNegocio');
+var ClienteNegocio = require('../negocio/clienteNegocio');
 let clienteSeleccionado = null;
 document.addEventListener("DOMContentLoaded", () => {
     const nombreInput = document.getElementById("nombre");

@@ -29,6 +29,21 @@ class VentaDAO {
         });
     }
 
+    static getVentasByCliente(telefono) {
+        const query = 'SELECT * FROM Venta WHERE Telefono = ?'; // Consulta para buscar ventas por teléfono
+        const params = [telefono];
+    
+        return new Promise((resolve, reject) => {
+            pool.query(query, params, (err, rows) => {
+                if (err) {
+                    console.error('Error al obtener ventas por teléfono:', err);
+                    return reject(err); // Si ocurre un error, rechaza la promesa
+                }
+    
+                resolve(rows); // Resuelve con las filas obtenidas
+            });
+        });
+    }
 
     static registrarVentaProducto(idVenta, nombre, cantidad) {
         const query = 'INSERT INTO VentaProducto (IdVenta, Nombre, Cantidad) VALUES (?, ?, ?)';
