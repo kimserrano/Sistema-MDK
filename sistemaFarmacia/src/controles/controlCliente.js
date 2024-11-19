@@ -1,4 +1,3 @@
-
 const ClienteNegocio = require('../negocio/clienteNegocio');
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,12 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (event) => {
         event.preventDefault();  // Evitar el comportamiento por defecto del formulario
 
-        // Obtener los valores de los inputs
         const nombre = nombreInput.value.trim();
         const telefono = telefonoInput.value.trim();
 
         try {
-            // Intentar agregar el cliente
             await ClienteNegocio.agregarCliente(telefono, nombre);
 
             Swal.fire({
@@ -23,56 +20,42 @@ document.addEventListener("DOMContentLoaded", () => {
                 text: 'El cliente ha sido agregado exitosamente.',
             });
 
-            // Limpiar el formulario después de enviar los datos
             form.reset();
         } catch (error) {
-            // Mostrar el error como una alerta
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: error.message,
             });
         }
-
     });
 });
 
-
-
-//BUSQUEDA 
+// BUSQUEDA
 document.addEventListener("DOMContentLoaded", () => {
     const buscarClienteInput = document.getElementById("buscarCliente");
     const buscarClienteBtn = document.getElementById("btnBuscarCliente");
     const clienteTicket = document.getElementById("ClienteTicket");
 
-    // Evento para buscar cliente cuando se hace clic en el botón
     buscarClienteBtn.addEventListener("click", async () => {
         const nombre = buscarClienteInput.value.trim();
-        
+
         if (nombre !== "") {
             try {
                 let clientes;
-                
-                // Verifica si el nombre es un número (teléfono)
+
                 if (/^\d+$/.test(nombre)) {
-                    // Si es un número, buscar por teléfono
                     clientes = await ClienteNegocio.buscarClientePorTelefono(nombre);
                 } else {
-                    // Si no es un número, buscar por nombre
                     clientes = await ClienteNegocio.buscarClientePorNombre(nombre);
                 }
-                
-                if (clientes.length > 0) {
-                    // Cerrar el modal anterior si existe
-                    const existingModal = document.getElementById('modalClientes');
-                    if (existingModal) {
-                        existingModal.remove();
-                    }
 
-                    // Crear y mostrar el modal con los resultados de búsqueda
+                if (clientes.length > 0) {
+                    const existingModal = document.getElementById('modalClientes');
+                    if (existingModal) existingModal.remove();
+
                     crearModalClientes(clientes);
                 } else {
-                    // Mostrar alerta de SweetAlert si no hay clientes
                     Swal.fire({
                         icon: 'info',
                         title: 'Sin resultados',
@@ -80,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
             } catch (error) {
-                // Manejo del error con SweetAlert
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -88,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
         } else {
-            // Mostrar una alerta si el campo de búsqueda está vacío
             Swal.fire({
                 icon: 'warning',
                 title: 'Campo vacío',
@@ -97,9 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Función para crear el modal dinámicamente con los resultados
     function crearModalClientes(clientes) {
-        // Crear el modal HTML dinámicamente
         const modalHTML = `
             <div class="modal fade" id="modalClientes" tabindex="-1" aria-labelledby="modalClientesLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -111,8 +90,22 @@ document.addEventListener("DOMContentLoaded", () => {
                         <div class="modal-body">
                             <ul id="listaClientes" class="list-group">
                                 ${clientes.map(cliente => `
-                                    <li class="list-group-item list-group-item-action" data-nombre="${cliente.Nombre}" data-telefono="${cliente.Telefono}">
-                                        ${cliente.Nombre} - ${cliente.Telefono}
+                                    <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-nombre="${cliente.Nombre}" data-telefono="${cliente.Telefono}">
+                                        <div>
+                                            <h6 class="mb-1">${cliente.Nombre}</h6>
+                                            <p class="mb-1">${cliente.Telefono}</p>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-outline-primary" onclick="verHistorial('${cliente.Telefono}')">
+                                                <i class="bi bi-clock"></i>
+                                            </button>
+                                            <button class="btn btn-outline-secondary" onclick="editarCliente('${cliente.Telefono}')">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger" onclick="eliminarCliente('${cliente.Telefono}')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
                                     </li>
                                 `).join('')}
                             </ul>
@@ -122,26 +115,21 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
 
-        // Insertar el modal en el body del documento
         document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-        // Mostrar el modal
         const modalClientes = new bootstrap.Modal(document.getElementById('modalClientes'));
         modalClientes.show();
 
-        // Añadir evento de selección de cliente
         const listaClientes = document.getElementById("listaClientes");
         listaClientes.addEventListener("click", (event) => {
-            const clienteSeleccionado = event.target.getAttribute("data-nombre");
-            const telefonoSeleccionado = event.target.getAttribute("data-telefono");
-            
-            if (clienteSeleccionado && telefonoSeleccionado) {
-                // Actualizar el nombre del cliente en el ticket
-                clienteTicket.innerHTML = `<strong>Cliente: ${clienteSeleccionado}</strong>`;
-                
-                // Cerrar el modal
+            const clienteSeleccionado = event.target.closest('li');
+            if (clienteSeleccionado) {
+                const nombre = clienteSeleccionado.getAttribute("data-nombre");
+                const telefono = clienteSeleccionado.getAttribute("data-telefono");
+
+                clienteTicket.innerHTML = `<strong>Cliente: ${nombre}</strong>`;
+
                 modalClientes.hide();
-                // Remover el modal del DOM después de cerrarlo
                 document.getElementById('modalClientes').remove();
             }
         });

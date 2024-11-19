@@ -6,6 +6,8 @@ jest.mock('../src/dao/clienteDAO', () => ({
     insertar: jest.fn(),
     buscarPorTelefono: jest.fn(),
     buscarPorNombre: jest.fn(),
+    existe: jest.fn(),
+    getClienteCompras: jest.fn()
 }));
 
 describe('ClienteNegocio', () => {
@@ -15,6 +17,7 @@ describe('ClienteNegocio', () => {
         const nombre = 'berly2';
 
         // Mockeamos la respuesta de la inserción
+        clienteDAO.existe.mockResolvedValue([]);
         clienteDAO.insertar.mockResolvedValue({ insertId: 1 });
 
         await expect(ClienteNegocio.agregarCliente(telefono, nombre)).resolves.not.toThrow();
@@ -95,6 +98,49 @@ describe('ClienteNegocio', () => {
             clienteDAO.buscarPorNombre.mockRejectedValue(errorMock);
 
             await expect(ClienteNegocio.buscarClientePorNombre(nombre)).rejects.toThrow('Error al buscar en la base de datos');
+        });
+
+        test('debería lanzar un error si el teléfono ya existe', async () => {
+            const telefono = '3222222559';
+            const nombre = 'berly2';
+        
+            clienteDAO.existe.mockResolvedValue([{ telefono }]);
+        
+            await expect(ClienteNegocio.agregarCliente(telefono, nombre)).rejects.toThrow('El numero de telefono ya existe');
+            expect(clienteDAO.existe).toHaveBeenCalledWith(telefono);
+        });
+
+        test('debería lanzar un error si el cliente no tiene compras previas', async () => {
+            const telefono = '3223222559';
+    
+            clienteDAO.getClienteCompras.mockResolvedValue([]);
+    
+            await expect(ClienteNegocio.getHistorialCompras(telefono)).rejects.toThrow('No hay compras previas registradas para este cliente');
+        });
+        
+        test('debería lanzar un error si ocurre un problema en el DAO', async () => {
+            const telefono = '3222222559';
+            const errorMock = new Error('Error al obtener el historial de compras');
+    
+            clienteDAO.getClienteCompras.mockRejectedValue(errorMock);
+    
+            await expect(ClienteNegocio.getHistorialCompras(telefono)).rejects.toThrow('Error al obtener el historial de compras');
+        });
+
+        test('debería devolver las compras y las marcas con descuento si el cliente califica', async () => {
+            const telefono = '3222222559';
+            const comprasMock = [
+                { Producto: 'Marca1', Cantidad: 5 },
+                { Producto: 'Marca1', Cantidad: 5 },
+                { Producto: 'Marca2', Cantidad: 3 },
+            ];
+    
+            clienteDAO.getClienteCompras.mockResolvedValue(comprasMock);
+    
+            const resultado = await ClienteNegocio.getHistorialCompras(telefono);
+    
+            expect(resultado.compras).toEqual(comprasMock);
+            expect(resultado.marcasConDescuento).toEqual(['Marca1']);
         });
     });
 });
