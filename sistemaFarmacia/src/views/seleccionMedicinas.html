@@ -13,24 +13,23 @@
 <body>
     <div class="container-fluid">
         <!-- Columna del ticket -->
-
-        <div class="ticket">
-            <div>
+        <div class="ticket" style="overflow: hidden; display: flex; flex-direction: column;">
+            <div style="overflow-y: auto; flex-grow: 1;">
                 <h5><strong>Ticket</strong></h5>
                 <p id="ClienteTicket"><strong>Cliente: Público en general</strong></p>
 
                 <div class="productos-contenedor">
                     <div class="item">
+                        <!-- Aquí irían los productos -->
                     </div>
                 </div> <!-- Contenedor para los productos -->
-
             </div>
-            <div class="mt-auto"> <!-- Mueve los elementos hacia la parte inferior -->
-
+            <div class="mt-auto">
             </div>
-            <div class="d-grid mt-3">
+            <div class="d-grid mt-3" style="position: sticky; bottom: 0; z-index: 1;">
                 <button class="btn btn-primary me-1 rounded">Pagar</button>
             </div>
+           
         </div>
 
         <!-- Sección de productos y título -->
