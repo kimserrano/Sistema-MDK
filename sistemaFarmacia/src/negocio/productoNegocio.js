@@ -41,7 +41,7 @@ class ProductoService {
         const existe = await this.productoDAO.verificarProductoExistente(nombre);
         if (existe) {
             throw new Error('El producto con este nombre ya existe.');
-            
+
         }
 
         const nuevoProducto = new Producto(nombre, lote, cantidad, fechaVencimiento, precio);
@@ -62,6 +62,7 @@ class ProductoService {
 
         try {
             const producto = await this.productoDAO.obtenerProductoPorId(id);
+            console.log('productoxid', producto);
             return producto;
         } catch (error) {
             throw new Error('Error al obtener el producto: ' + error.message);
@@ -122,12 +123,12 @@ class ProductoService {
         if (!criterio) {
             throw new Error('Criterio de búsqueda inválido.');
         }
-    
+
         try {
             const productos = await this.productoDAO.obtenerProductosPorCriterio(criterio);
-            
-           
-    
+
+
+
             return productos;
         } catch (error) {
             throw new Error('Error al obtener los productos: ' + error.message);
@@ -152,7 +153,10 @@ class ProductoService {
 
         const producto = await this.obtenerProductoPorId(id);
 
-        console.log(producto)
+        console.log('CNANT A REDUCIR', cantidadAReducir);
+        console.log('CNANT A PRODUCTO', producto.cantidad);
+
+
         if (producto.cantidad < cantidadAReducir) {
             throw new Error('La cantidad a reducir excede el inventario disponible.');
         }
@@ -215,6 +219,7 @@ class ProductoService {
         }
     }
 
+  
 
 }
 

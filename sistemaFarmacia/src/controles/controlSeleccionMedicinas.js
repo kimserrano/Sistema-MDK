@@ -30,6 +30,7 @@ function mostrarProductos(productos) {
             <div class="product">
                 <h6>${producto.nombre}</h6>
                 <p>$${producto.precio.toFixed(2)}</p>
+                <p class="product-id">${producto.id}</p> 
                 <div class="d-flex justify-content-center align-items-center">
                     <button class="btn btn-outline-primary" onclick="cambiarCantidad(this, -1)">-</button>
                     <input type="number" value="0" min="0" max="${producto.cantidad}" class="form-control mx-2 text-center cantidad-input" style="width: 70px;" 
@@ -85,6 +86,7 @@ function actualizarTicket() {
         const nombre = item.querySelector('h6').innerText;
         const precio = parseFloat(item.querySelector('p').innerText.replace('$', ''));
         const cantidad = parseInt(item.querySelector('.cantidad-input').value);
+        const idProducto = item.querySelector('.product-id').innerText;
 
         if (cantidad > 0) {
             const subtotal = precio * cantidad;
@@ -93,9 +95,11 @@ function actualizarTicket() {
             // Crear un nuevo elemento en el ticket
             const newItem = document.createElement('div');
             newItem.className = 'item';
+            newItem.setAttribute('data-id', idProducto);
             newItem.innerHTML = `
-                <span>${nombre}</span>
-                <span>$${precio.toFixed(2)} x ${cantidad}</span>
+                  <span class="nombre">${nombre}</span>
+                  <span class="id-producto">${idProducto}</span>
+                     <span class="cantidad-precio">$${precio.toFixed(2)} x ${cantidad}</span>
             `;
             productosContenedor.appendChild(newItem); // Agregar al contenedor de productos
         }
@@ -166,27 +170,43 @@ function vaciarTicket() {
 // Función para capturar el contenido del ticket
 function guardarTicket() {
     const items = document.querySelectorAll('.productos-contenedor .item');
-    let ticketContenido = "Ticket de Compra\n\n"
+    let ticketContenido = "Ticket de Compra\n\n";
     const cliente = getClienteSeleccionado();
+
     if (cliente) {
         ticketContenido += `Cliente: ${cliente.nombre}\nTeléfono: ${cliente.telefono}\n\n`;
     } else {
         ticketContenido += `Cliente: público en general\n\n`;
-    };
+    }
 
     if (cajeroActivo) {
         ticketContenido += `Cajero: ${cajeroActivo.Usuario}\n\n`;
     }
 
     const productos = [];
+    
+    // Verifica si hay productos antes de procesar
+    if (items.length === 0) {
+        Swal.fire({
+            title: 'Error',
+            text: 'No puedes procesar un pago vacío. Agrega productos al carrito.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+        return;  // Detiene la ejecución si no hay productos
+    }
+
     // Recopilar los productos y sus detalles
     items.forEach(item => {
-    const nombre = item.querySelector('span').innerText;
-    const cantidadPrecio = item.querySelectorAll('span')[1].innerText;
+        const nombre = item.querySelector('.nombre').innerText;
+        const cantidadPrecio = item.querySelector('.cantidad-precio').innerText;
+        const idProducto = item.getAttribute('data-id');
+
         ticketContenido += `${nombre} ${cantidadPrecio}\n`;
         productos.push({
             nombre: nombre,
-            cantidad: cantidadPrecio.split(' x ')[1]  // Extraer la cantidad después de la "x"
+            id: idProducto,
+            cantidad: parseInt(cantidadPrecio.split(' x ')[1]) // Extraer la cantidad después de la "x"
         });
     });
 
@@ -198,6 +218,7 @@ function guardarTicket() {
     ticketContenido += `\nTotal: ${total}\nIVA: ${iva}\nTotal con IVA: ${totalConIva}`;
 
     totalConIva = parseFloat(totalConIva.replace('$', '').trim());
+
     // Crear el objeto venta
     const venta = {
         fecha: new Date(),
@@ -213,7 +234,8 @@ function guardarTicket() {
             productos.forEach(producto => {
                 VentaNegocio.registrarVentaProducto(idVenta, producto.nombre, producto.cantidad)
                     .then(() => {
-                        console.log(`Producto ${producto.nombre} registrado con éxito.`);
+                        // Actualizar la cantidad del producto en la base de datos
+                        ProductoNegocio.reducirInventario(parseInt(producto.id, 10), producto.cantidad);
                     })
                     .catch(err => {
                         console.error('Error al registrar el producto:', err);
