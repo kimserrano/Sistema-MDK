@@ -27,7 +27,18 @@ class VentaNegocio {
         });
     }
 
-
+    static obtenerCantidadVentasPorTelefono(telefono) {
+        return new Promise((resolve, reject) => {
+            VentaDAO.getVentasByCliente(telefono) // Llama al método del DAO
+                .then(ventas => {
+                    const cantidadVentas = ventas.length; // Calcula la cantidad de ventas
+                    resolve(cantidadVentas); // Resuelve con la cantidad
+                })
+                .catch(err => {
+                    reject(new Error('Error al obtener ventas del cliente: ' + err.message)); // Rechaza con un mensaje claro
+                });
+        });
+    }
 }
 
 module.exports = VentaNegocio;
