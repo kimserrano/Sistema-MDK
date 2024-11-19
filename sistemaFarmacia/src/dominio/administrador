@@ -1,8 +1,8 @@
-class Cajero {
+class Administrador {
     constructor(usuario, contra) {
         this.usuario = usuario;
         this.contra = contra;
     }
 }
 
-module.exports = Cajero;
+module.exports = Administrador;
