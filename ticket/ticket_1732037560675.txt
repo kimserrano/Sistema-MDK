@@ -1,0 +1,13 @@
+Ticket de Compra
+
+Cliente: Carlos García
+Teléfono: 6441122334
+
+Cajero: cajero1
+
+Paracetamol $10.50 x 3
+Antigripal $20.00 x 20
+
+Total: $431.50
+IVA: $69.04
+Total con IVA: $500.54

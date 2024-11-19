@@ -1,0 +1,12 @@
+Ticket de Compra
+
+Cliente: Carlos García
+Teléfono: 6441122334
+
+Cajero: cajero1
+
+Paracetamol $10.50 x 2
+
+Total: $21.00
+IVA: $3.36
+Total con IVA: $24.36
