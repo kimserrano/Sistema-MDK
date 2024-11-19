@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nombreInput = document.getElementById("nombre");
     const telefonoInput = document.getElementById("telefono");
     const form = document.querySelector("form");
+    
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();  // Evitar el comportamiento por defecto del formulario
@@ -36,6 +37,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const buscarClienteInput = document.getElementById("buscarCliente");
     const buscarClienteBtn = document.getElementById("btnBuscarCliente");
     const clienteTicket = document.getElementById("ClienteTicket");
+
+    const btnLimpiar = document.getElementById('btnLimpiarCliente');
+    const inputCliente = document.getElementById('buscarCliente');
+
+    btnLimpiar.addEventListener('click', function() {
+        inputCliente.value = '';
+        clienteTicket.innerHTML = `<strong>Cliente: Público en general</strong>`;
+      });
+
 
     buscarClienteBtn.addEventListener("click", async () => {
         const nombre = buscarClienteInput.value.trim();
