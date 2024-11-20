@@ -16,11 +16,11 @@
     <div class="container-fluid centered-content">
         <!-- Columna del ticket -->
 
-
-
-
         <!-- Sección de productos y título -->
         <div class="products-section-wrapper">
+            <div class="d-flex justify-content-end mb-2">
+                <button id="btnNuevoPersonal" class="btn btn-primary rounded">Nuevo personal</button>
+            </div>
             <!-- Parte superior: Título MDK Medicinas -->
             <h2><strong>MDK MEDICINAS</strong></h2>
             <div class="products-section-top">
@@ -56,7 +56,11 @@
     <script src="../controles/controlInventario.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
+    <script>
+        document.getElementById('btnNuevoPersonal').addEventListener('click', function () {
+            window.location.href = '../views/register.html';
+        });
+    </script>
 </body>
 
 </html>

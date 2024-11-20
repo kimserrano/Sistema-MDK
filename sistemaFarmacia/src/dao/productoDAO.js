@@ -25,9 +25,9 @@ class ProductoDAO {
         return connection.promise().query(query)
             .then(([rows]) => {
 
-                return rows.map(row => new Producto( row.Nombre, row.Lote,row.Cantidad ,row.FechaVencimiento , row.Precio));
+                return rows.map(row => new Producto(row.Nombre, row.Lote, row.Cantidad, row.FechaVencimiento, row.Precio, row.PrecioOriginal, row.Descuento, row.id));
 
-    
+
             })
             .catch((err) => {
                 console.error('Error al consultar los productos:', err);
@@ -43,14 +43,17 @@ class ProductoDAO {
                     console.error('Error al obtener producto:', err);
                     return reject(err);
                 }
-                console.log(results)
+                //(row.Nombre, row.Lote, row.Cantidad, row.FechaVencimiento, row.Precio, row.PrecioOriginal, row.Descuento, row.id)
                 if (results.length > 0) {
                     const producto = new Producto(
                         results[0].Nombre,
                         results[0].Lote,
                         results[0].Cantidad,
                         results[0].FechaVencimiento,
-                        results[0].Precio
+                        results[0].Precio,
+                        results[0].PrecioOriginal,
+                        results[0].Descuento,
+                        results[0].id
                     );
                     resolve(producto);
                 } else {
@@ -64,7 +67,7 @@ class ProductoDAO {
         return new Promise((resolve, reject) => {
             let searchValue;
             let query;
-    
+
             // Verifica si el criterio comienza con "LOTE"
             if (criterio.startsWith("LOTE")) {
                 // Si es así, quitar "LOTE" y preparar el valor de búsqueda solo para Lote
@@ -81,23 +84,27 @@ class ProductoDAO {
                     WHERE id LIKE ? OR Nombre LIKE ? OR Lote LIKE ?
                 `;
             }
-    
+
             const values = criterio.startsWith("LOTE") ? [searchValue] : [searchValue, searchValue, searchValue];
-    
+
             connection.query(query, values, (err, results) => {
                 if (err) {
                     console.error('Error en la consulta:', err);
                     return reject(err);
                 }
-    
+
                 const productos = results.map(result => new Producto(
+                    
                     result.Nombre,
                     result.Lote,
                     result.Cantidad,
                     result.FechaVencimiento,
-                    result.Precio
+                    result.Precio,
+                    null,
+                    null,
+                    result.id
                 ));
-    
+
                 resolve(productos);
             });
         });
@@ -196,7 +203,6 @@ class ProductoDAO {
         // Esperar que todas las actualizaciones se completen
         await Promise.all(promises);
     }
-
 
 }
 
