@@ -237,11 +237,9 @@ async function actualizarTicket() {
 
         // Aplicar descuento si tiene 2 o más compras
         const v = await verificarVentas(telefonoCliente);
-        console.log(v + "boolean")
         if (v) {
             const descuento = total * 0.10; // 10% de descuento
             const totalConDescuento = total - descuento;
-            console.log("entro")
             // Crear y agregar el elemento de descuento
             const descuentoItem = document.createElement('div');
             descuentoItem.className = 'item total-item';
@@ -275,6 +273,8 @@ function vaciarTicket() {
     const ticketSection = document.querySelector('.ticket');
     const productosContenedor = ticketSection.querySelector('.productos-contenedor'); // Contenedor de productos
     const totalContainer = ticketSection.querySelector('.mt-auto'); // Contenedor de totales
+    const clienteTicket = document.getElementById('ClienteTicket'); // Elemento del cliente
+    const buscarClienteInput = document.getElementById('buscarCliente'); // Input del cliente
 
     // Limpiar el contenido de los productos
     productosContenedor.innerHTML = '';
@@ -303,6 +303,12 @@ function vaciarTicket() {
     cantidadInputs.forEach(input => {
         input.value = 0;
     });
+
+
+    // Resetear el cliente a "Público en general"
+    clienteTicket.innerHTML = '<strong>Cliente: Público en general</strong>';
+    // Limpiar el input de buscar cliente
+    buscarClienteInput.value = '';
 }
 
 // Función para capturar el contenido del ticket
