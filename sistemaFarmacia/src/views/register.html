@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar nuevo usuario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Enlace a Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./css/styleRegister.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="back-button">
+        <button id="btnRegresar" class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-2"></i> Regresar
+        </button>
+    </div>
+
+    <div class="container-form">
+        <h2 class="text-center">Registrar nuevo usuario</h2>
+        <form action="#">
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario:</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+                <div class="d-flex align-items-center">
+                    <input type="password" id="password" name="password" class="form-control" required>
+                    <i class="bi bi-exclamation-circle text-primary" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="La contraseña debe tener al menos 5 caracteres, una mayúscula y un número.">
+                    </i>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">¿Tiene permisos de administrador?</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="admin-yes" name="admin" value="yes">
+                        <label class="form-check-label" for="admin-yes">Sí</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="admin-no" name="admin" value="no" checked>
+                        <label class="form-check-label" for="admin-no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Registrar</button>
+        </form>
+    </div>
+
+    <!-- Enlace a Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../controles/controlCajeroAdmin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Habilitar el tooltip de Bootstrap
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+     <script>
+        document.getElementById('btnRegresar').addEventListener('click', function () {
+            window.history.back(); // Regresa al HTML anterior en el historial
+        });
+    </script>
+</body>
+
+</html>
