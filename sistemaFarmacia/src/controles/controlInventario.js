@@ -143,4 +143,25 @@ function formatoFechaSQL(fecha) {
     return `${year}-${month}-${day}`;
 }
 
+async function borrarProducto(productoId) {
+    try {
+        const confirmacion = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'No podrás recuperar este producto después de eliminarlo.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (confirmacion.isConfirmed) {
+            await ProductoNegocio.eliminarProducto(productoId);
+            Swal.fire('Eliminado', 'El producto ha sido eliminado.', 'success');
+            obtenerTodosLosProductos();
+        }
+    } catch (error) {
+        console.error('Error al eliminar producto:', error);
+        Swal.fire('Error', 'No se pudo eliminar el producto. Inténtalo de nuevo.', 'error');
+    }
+}
 
