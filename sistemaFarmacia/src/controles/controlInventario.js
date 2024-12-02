@@ -68,10 +68,10 @@ function mostrarProductosEncontrados(productos) {
                 <p>$${producto.precio.toFixed(2)}</p>
                 <p class="cantidad">Cantidad: ${producto.cantidad}</p> <!-- Mostrar la cantidad aquí -->
                 <div class="d-flex justify-content-center align-items-center">
-                    <button class="btn btn-outline-danger me-2" onclick="borrarProducto('${producto.id}')">
+                    <button class="btn btn-outline-danger me-2" onclick="borrarProducto(${producto.id})">
                         <i class="bi bi-trash"></i> <!-- Ícono de borrar -->
                     </button>
-                    <button class="btn btn-outline-primary" onclick="editarProducto('${producto.id}')">
+                    <button class="btn btn-outline-primary" onclick="editarProducto(${producto.id})">
                         <i class="bi bi-pencil"></i> <!-- Ícono de editar -->
                     </button>
                 </div>
@@ -80,3 +80,67 @@ function mostrarProductosEncontrados(productos) {
         productsSection.appendChild(productoDiv);
     });
 }
+
+async function editarProducto(productoId) {
+    try {
+        const producto = await ProductoNegocio.obtenerProductoPorId(productoId);
+
+        if (!producto) {
+            alert('Producto no encontrado.');
+            return;
+        }
+
+        const { value: formValues } = await Swal.fire({
+            title: 'Editar Producto',
+            html: `
+                <label for="nombreProducto">Nombre</label>
+                <input id="nombreProducto" class="swal2-input" value="${producto.nombre}">
+                <label for="precioProducto">Precio</label>
+                <input id="precioProducto" type="number" class="swal2-input" value="${producto.precio}">
+                <label for="cantidadProducto">Cantidad</label>
+                <input id="cantidadProducto" type="number" class="swal2-input" value="${producto.cantidad}">
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            preConfirm: () => {
+                return {
+                    nombre: document.getElementById('nombreProducto').value.trim(),
+                    precio: parseFloat(document.getElementById('precioProducto').value),
+                    cantidad: parseInt(document.getElementById('cantidadProducto').value)
+                };
+            }
+        });
+
+        if (formValues) {
+            let nuevoNombre = true
+
+            if(producto.nombre === formValues.nombre){
+                nuevoNombre = false
+            }
+
+            producto.nombre = formValues.nombre
+            producto.precio = formValues.precio
+            producto.cantidad = formValues.cantidad
+            producto.fechaVencimiento = formatoFechaSQL(producto.fechaVencimiento)
+
+            await ProductoNegocio.actualizarProducto(productoId, producto, nuevoNombre);
+            alert('Producto actualizado exitosamente.');
+            obtenerTodosLosProductos(); 
+        }
+    } catch (error) {
+        console.error('Error al editar producto:', error);
+        alert('Ocurrió un error al editar el producto. Inténtelo de nuevo más tarde.');
+    }
+}
+
+function formatoFechaSQL(fecha) {
+    const date = new Date(fecha);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
+
