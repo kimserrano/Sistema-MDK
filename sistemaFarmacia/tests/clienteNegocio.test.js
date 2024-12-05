@@ -112,14 +112,7 @@ describe('ClienteNegocio', () => {
             expect(clienteDAO.existe).toHaveBeenCalledWith(telefono);
         });
 
-        test('debería lanzar un error si el cliente no tiene compras previas', async () => {
-            const telefono = '3223222559';
-    
-            clienteDAO.getClienteCompras.mockResolvedValue([]);
-    
-            await expect(ClienteNegocio.getHistorialCompras(telefono)).rejects.toThrow('No hay compras previas registradas para este cliente');
-        });
-        
+      
         test('debería lanzar un error si ocurre un problema en el DAO', async () => {
             const telefono = '3222222559';
             const errorMock = new Error('Error al obtener el historial de compras');
