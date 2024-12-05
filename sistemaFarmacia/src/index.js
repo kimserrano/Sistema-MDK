@@ -50,7 +50,24 @@ ipcMain.handle('get-clientes', async () => {
         throw error;
     }
 });
-
+ipcMain.handle('delete-cliente', async (event, telefono) => {
+    try {
+        const resultado = await ClienteNegocio.eliminarCliente(telefono);
+        return resultado;  // Devuelve algún resultado, como un mensaje de éxito o el cliente eliminado
+    } catch (error) {
+        console.error('Error al eliminar cliente:', error);
+        throw error;
+    }
+});
+ipcMain.handle('update-client-name', async (event, telefono, nuevoNombre) => {
+    try {
+      const result = await ClienteNegocio.actualizarNombre(telefono, nuevoNombre);
+      return result;  // Si la actualización fue exitosa, devuelve el resultado
+    } catch (error) {
+      console.error('Error al actualizar el cliente:', error);
+      throw error;  // Lanza el error para que el frontend lo capture
+    }
+  });
 ipcMain.handle('search-clientes', async (event, searchQuery) => {
     try {
         return await ClienteNegocio.buscarClientePorNombre(searchQuery);

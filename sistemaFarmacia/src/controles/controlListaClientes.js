@@ -36,11 +36,59 @@ function renderClientes(clientes) {
     clientList.appendChild(clientCard);
   });
 }
+let clienteAEliminar = null;
 
+function eliminarCliente(telefono) {
+  clienteAEliminar = telefono;
+  console.log("entre")
+  const deleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+  deleteModal.show();
+}
+document.getElementById('confirmDeleteButton').addEventListener('click', async () => {
+  if (clienteAEliminar) {
+    try {
+      await ipcRenderer.invoke('delete-cliente', clienteAEliminar);
+      clienteAEliminar = null;
+      loadClientes();
+      const deleteModal = bootstrap.Modal.getInstance(document.getElementById('confirmDeleteModal'));
+      deleteModal.hide();
+    } catch (error) {
+      console.error('Error al eliminar cliente:', error);
+    }
+  }
+});
 function verHistorial(telefono) {
   ipcRenderer.send('open-historial', telefono);
 }
+function editarCliente(telefono) {
+  clienteAEditar = telefono;
 
+  // Mostrar el modal para editar el nombre
+  const editNameModal = new bootstrap.Modal(document.getElementById('editNameModal'));
+  editNameModal.show();
+}
+document.getElementById('confirmEditButton').addEventListener('click', async () => {
+  const nuevoNombre = document.getElementById('newNameInput').value.trim();
+  const errorMessage = document.getElementById('error-message');
+
+  if (!nuevoNombre) {
+    // Mostrar error si el nombre está vacío
+    errorMessage.style.display = 'block';
+  } else {
+    // Ocultar el error y proceder con la actualización
+    errorMessage.style.display = 'none';
+
+    try {
+      await ipcRenderer.invoke('update-client-name', clienteAEditar, nuevoNombre);
+      clienteAEditar = null;
+      loadClientes();
+      const editNameModal = bootstrap.Modal.getInstance(document.getElementById('editNameModal'));
+      editNameModal.hide();
+    } catch (error) {
+      console.error('Error al editar el nombre del cliente:', error);
+    }
+  }
+});
 document.getElementById('search-button').addEventListener('click', async () => {
   const searchQuery = document.getElementById('search-input').value;
   try {
