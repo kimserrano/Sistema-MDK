@@ -1,6 +1,5 @@
 const ClienteNegocio = require('../negocio/clienteNegocio');
 const { ipcRenderer } = require('electron');
-const Swal = require('sweetalert2');
 
 const historialCompras = document.getElementById('historialCompras').querySelector('tbody');
 const searchProducto = document.getElementById('searchProducto');
