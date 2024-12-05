@@ -8,7 +8,7 @@ class ProductoDAO {
         console.log('Cantidad a insertar:', producto.cantidad);
         const query = 'INSERT INTO producto (nombre, lote, cantidad, fechavencimiento, precio, precioOriginal) VALUES (?, ?, ?, ?, ?, ?)';
         const params = [producto.nombre, producto.lote, producto.cantidad, producto.fechaVencimiento, producto.precio, producto.precio];
-
+    
         return new Promise((resolve, reject) => {
             connection.query(query, params, (err, result) => {
                 if (err) {
@@ -20,6 +20,8 @@ class ProductoDAO {
             });
         });
     }
+    
+
     consultarTodos() {
         const query = 'SELECT * FROM Producto';
         return connection.promise().query(query)

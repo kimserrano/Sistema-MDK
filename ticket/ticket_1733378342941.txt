@@ -1,0 +1,11 @@
+Ticket de Compra
+
+Cliente: público en general
+
+Cajero: lokis
+
+Simvastatina $130.00 x 2
+
+Total: $260.00
+IVA: $41.60
+Total con IVA: $301.60

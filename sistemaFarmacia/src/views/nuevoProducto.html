@@ -6,11 +6,12 @@
     <title>MDK Medicinas - Nuevo Producto</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/styleNuevoProducto.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="back-button">
-        <button class="btn btn-secondary">Regresar</button>
+        <button id="btnRegresar" class="btn btn-secondary">Regresar</button>
     </div>
 
     <div class="container">
@@ -55,6 +56,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../controles/renderNuevoProducto.js"></script>
-
+<script>
+     document.getElementById('btnRegresar').addEventListener('click', function () {
+        window.history.back(); // Regresa al HTML anterior en el historial
+    });
+</script>
 </body>
 </html>

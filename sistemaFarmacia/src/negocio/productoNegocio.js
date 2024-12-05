@@ -38,12 +38,6 @@ class ProductoService {
             throw new Error('La fecha de vencimiento es inválida. Debe tener el formato YYYY-MM-DD.');
         }
 
-        const existe = await this.productoDAO.verificarProductoExistente(nombre);
-        if (existe) {
-            throw new Error('El producto con este nombre ya existe.');
-
-        }
-
         const nuevoProducto = new Producto(nombre, lote, cantidad, fechaVencimiento, precio);
 
         try {
