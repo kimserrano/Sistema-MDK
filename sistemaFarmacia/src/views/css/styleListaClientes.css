@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #b3cee5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .container {
+    width: 80%;
+    background-color: #e1eff7;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  .client-card {
+    display: inline-block;
+    width: 30%;
+    background-color: #ffffff;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  }
+  .client-card h3 {
+    margin: 0;
+    font-size: 1.2em;
+  }
+  .client-card p {
+    font-size: 1em;
+    color: #555;
+  }
+  .client-card button {
+    background: whitesmoke;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 1.2em;
+  }
+  .client-card button:hover {
+    color: white;
+  }
+  #search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  #search-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 60%;
+    margin-right: 10px;
+  }
+  #search-button, #new-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  #search-button:hover, #new-button:hover {
+    background-color: #0056b3;
+  }
+  .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+}

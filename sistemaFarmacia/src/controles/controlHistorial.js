@@ -1,0 +1,70 @@
+const ClienteNegocio = require('../negocio/clienteNegocio');
+const { ipcRenderer } = require('electron');
+const Swal = require('sweetalert2');
+
+const historialCompras = document.getElementById('historialCompras').querySelector('tbody');
+const searchProducto = document.getElementById('searchProducto');
+const fechaInicio = document.getElementById('fechaInicio');
+const fechaFin = document.getElementById('fechaFin');
+const filtrarBtn = document.getElementById('filtrarBtn');
+let telef
+
+ipcRenderer.on('cargar-historial', (event, telefono) => {
+    cargarHistorial(telefono); // Cargar historial sin filtros al inicio
+});
+
+// Agregar evento al botón de filtrar
+filtrarBtn.addEventListener('click', () => {
+    const filtroProducto = searchProducto.value; // Obtener el valor del filtro de producto
+    const filtroFechaInicio = fechaInicio.value; // Obtener la fecha de inicio
+    const filtroFechaFin = fechaFin.value; // Obtener la fecha de fin
+    cargarHistorial(telef, filtroProducto, filtroFechaInicio, filtroFechaFin);
+});
+
+async function cargarHistorial(telefono, filtroProducto = '', filtroFechaInicio = '', filtroFechaFin = '') {
+    try {
+        telef = telefono
+        const { compras } = await ClienteNegocio.getHistorialCompras(telefono);
+
+        if (!compras || compras.length === 0) {
+            // Mostrar SweetAlert si no hay compras
+            Swal.fire({
+                icon: 'info',
+                title: 'Sin compras registradas',
+                text: 'Este cliente no tiene compras registradas en el historial.',
+                confirmButtonText: 'Aceptar'
+            });
+            return;
+        }
+
+        const comprasFiltradas = compras.filter(compra => {
+            const coincideProducto = filtroProducto ? compra.Producto.toLowerCase().includes(filtroProducto.toLowerCase()) : true;
+            const coincideFechaInicio = filtroFechaInicio ? new Date(compra.Fecha) >= new Date(filtroFechaInicio) : true;
+            const coincideFechaFin = filtroFechaFin ? new Date(compra.Fecha) <= new Date(filtroFechaFin) : true;
+            return coincideProducto && coincideFechaInicio && coincideFechaFin;
+        });
+
+        historialCompras.innerHTML = '';
+
+
+            comprasFiltradas.forEach(compra => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${new Date(compra.Fecha).toLocaleDateString()}</td>
+                <td>${compra.Producto}</td>
+                <td>${compra.Cantidad}</td>
+                <td>$${compra.Precio.toFixed(2)}</td>
+                <td>${compra.Lote}</td>
+            `;
+            historialCompras.appendChild(row);
+        });
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al cargar',
+            text: 'No se pudo cargar el historial de compras. Inténtalo de nuevo.',
+            confirmButtonText: 'Aceptar'
+        });
+        console.error('Error al cargar el historial de compras:', error);
+    }
+}
