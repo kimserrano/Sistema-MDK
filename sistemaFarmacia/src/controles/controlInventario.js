@@ -86,22 +86,37 @@ async function editarProducto(productoId) {
         const producto = await ProductoNegocio.obtenerProductoPorId(productoId);
 
         if (!producto) {
-            alert('Producto no encontrado.');
+            await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Producto no encontrado.',
+            });
             return;
         }
 
         const { value: formValues } = await Swal.fire({
             title: 'Editar Producto',
             html: `
-                <label for="nombreProducto">Nombre</label>
-                <input id="nombreProducto" class="swal2-input" value="${producto.nombre}">
-                <label for="precioProducto">Precio</label>
-                <input id="precioProducto" type="number" class="swal2-input" value="${producto.precio}">
-                <label for="cantidadProducto">Cantidad</label>
-                <input id="cantidadProducto" type="number" class="swal2-input" value="${producto.cantidad}">
+                <div class="modal-editar-producto">
+                    <div class="form-group">
+                        <label for="nombreProducto">Nombre</label>
+                        <input id="nombreProducto" class="swal2-input" value="${producto.nombre}">
+                    </div>
+                    <div class="form-group">
+                        <label for="precioProducto">Precio</label>
+                        <input id="precioProducto" type="number" class="swal2-input" value="${producto.precio}">
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidadProducto">Cantidad</label>
+                        <input id="cantidadProducto" type="number" class="swal2-input" value="${producto.cantidad}">
+                    </div>
+                </div>
             `,
             focusConfirm: false,
             showCancelButton: true,
+            customClass: {
+                popup: 'modal-editar-producto-popup'
+            },
             preConfirm: () => {
                 return {
                     nombre: document.getElementById('nombreProducto').value.trim(),
@@ -110,28 +125,36 @@ async function editarProducto(productoId) {
                 };
             }
         });
+        
 
         if (formValues) {
-            let nuevoNombre = true
+            let nuevoNombre = producto.nombre !== formValues.nombre;
 
-            if(producto.nombre === formValues.nombre){
-                nuevoNombre = false
-            }
-
-            producto.nombre = formValues.nombre
-            producto.precio = formValues.precio
-            producto.cantidad = formValues.cantidad
-            producto.fechaVencimiento = formatoFechaSQL(producto.fechaVencimiento)
+            producto.nombre = formValues.nombre;
+            producto.precio = formValues.precio;
+            producto.cantidad = formValues.cantidad;
+            producto.fechaVencimiento = formatoFechaSQL(producto.fechaVencimiento);
 
             await ProductoNegocio.actualizarProducto(productoId, producto, nuevoNombre);
-            alert('Producto actualizado exitosamente.');
-            obtenerTodosLosProductos(); 
+
+            await Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: 'Producto actualizado exitosamente.',
+            });
+
+            obtenerTodosLosProductos();
         }
     } catch (error) {
         console.error('Error al editar producto:', error);
-        alert('Ocurrió un error al editar el producto. Inténtelo de nuevo más tarde.');
+        await Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ocurrió un error al editar el producto. Inténtelo de nuevo más tarde.',
+        });
     }
 }
+
 
 function formatoFechaSQL(fecha) {
     const date = new Date(fecha);
