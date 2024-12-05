@@ -3,6 +3,7 @@ const VentaNegocio = require('../negocio/ventaNegocio');
 const productos = require('../dominio/producto');
 const { getClienteSeleccionado, setClienteSeleccionado } = require('../controles/controlCliente');
 const cajeroActivo = JSON.parse(localStorage.getItem('cajeroActivo'));
+const { ipcRenderer } = require('electron');
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -421,6 +422,12 @@ function guardarTicket() {
             });
         });
 }
+
+
+function verHistorial(telefono) {
+    ipcRenderer.send('open-historial', telefono);
+  }
+
 
 // Añadir eventListener al botón "Pagar"
 const botonPagar = document.querySelector('.btn.btn-primary');

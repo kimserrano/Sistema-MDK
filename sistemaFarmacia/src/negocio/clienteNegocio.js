@@ -92,7 +92,7 @@ class ClienteNegocio {
         try {
             const compras = await clienteDAO.getClienteCompras(telefono);
             if (compras.length === 0) {
-                throw new Error('No hay compras previas registradas para este cliente');
+                return { compras: [], marcasConDescuento: [] };
             }
 
             const productosPorMarca = {};
