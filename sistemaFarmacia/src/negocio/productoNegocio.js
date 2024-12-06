@@ -38,12 +38,6 @@ class ProductoService {
             throw new Error('La fecha de vencimiento es inválida. Debe tener el formato YYYY-MM-DD.');
         }
 
-        const existe = await this.productoDAO.verificarProductoExistente(nombre);
-        if (existe) {
-            throw new Error('El producto con este nombre ya existe.');
-
-        }
-
         const nuevoProducto = new Producto(nombre, lote, cantidad, fechaVencimiento, precio);
 
         try {
@@ -69,7 +63,7 @@ class ProductoService {
         }
     }
 
-    async actualizarProducto(id, data) {
+    async actualizarProducto(id, data, nuevoNombre) {
         const { nombre, lote, cantidad, fechaVencimiento, precio } = data;
 
         if (!id || !this.validarNumeroPositivo(id)) {
@@ -90,10 +84,12 @@ class ProductoService {
         if (!this.validarNumeroPositivo(precio)) {
             throw new Error('El precio debe ser un número positivo.');
         }
-
-        const existe = await this.productoDAO.verificarProductoExistente(nombre);
-        if (existe) {
-            throw new Error('Ya existe un producto con este nombre. El nombre debe ser único.');
+        
+        if(nuevoNombre){
+            const existe = await this.productoDAO.verificarProductoExistente(nombre);
+            if (existe) {
+                throw new Error('Ya existe un producto con este nombre. El nombre debe ser único.');
+            }
         }
 
         const productoActualizado = new Producto(nombre, lote, cantidad, fechaVencimiento, precio);
@@ -105,7 +101,6 @@ class ProductoService {
             throw new Error('Error al actualizar el producto: ' + error.message);
         }
     }
-
 
     async eliminarProducto(id) {
         if (!id || !this.validarNumeroPositivo(id)) {

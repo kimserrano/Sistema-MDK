@@ -73,7 +73,22 @@ class ClienteNegocio {
             throw error;
         }
     }
-
+    static async actualizarNombre(telefono, nuevoNombre) {
+        try {
+          // Llamamos al método del DAO que actualiza el nombre del cliente
+          const result = await clienteDAO.actualizarNombrePorTelefono(telefono, nuevoNombre);
+          
+          // Verificamos el resultado de la actualización
+          if (result.affectedRows === 0) {
+            throw new Error('No se encontró un cliente con ese teléfono para actualizar.');
+          }
+          
+          return result; // Devolvemos el resultado de la actualización
+        } catch (error) {
+          console.error('Error al actualizar el nombre del cliente:', error);
+          throw error; // Lanza el error para que lo maneje el controlador o quien llame a este método
+        }
+      }
     // Método para eliminar un cliente por teléfono
     static async eliminarCliente(telefono) {
         try {
@@ -92,7 +107,7 @@ class ClienteNegocio {
         try {
             const compras = await clienteDAO.getClienteCompras(telefono);
             if (compras.length === 0) {
-                throw new Error('No hay compras previas registradas para este cliente');
+                return { compras: [], marcasConDescuento: [] };
             }
 
             const productosPorMarca = {};
@@ -111,6 +126,7 @@ class ClienteNegocio {
             throw error;
         }
     }
+    
 }
 
 module.exports = ClienteNegocio;

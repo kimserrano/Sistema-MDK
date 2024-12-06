@@ -1,0 +1,12 @@
+Ticket de Compra
+
+Cliente: Juan Pérez
+Teléfono: 1234567890
+
+Cajero: cajero1
+
+Ibuprofeno $40.00 x 1
+
+Total: $40.00
+IVA: $6.40
+Total con IVA: $46.40

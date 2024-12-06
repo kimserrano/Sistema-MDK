@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                             <p class="mb-1">${cliente.Telefono}</p>
                                         </div>
                                         <div>
-                                            <button class="btn btn-outline-primary" onclick="verHistorial('${cliente.Telefono}')">
+                                            <button class="btn btn-outline-primary"  onclick="verHistorial('${cliente.Telefono}')">
                                                 <i class="bi bi-clock"></i>
                                             </button>
                                             <button class="btn btn-outline-secondary" onclick="editarCliente('${cliente.Telefono}')">
@@ -153,7 +153,5 @@ function setClienteSeleccionado(cliente) {
 function getClienteSeleccionado() {
     return clienteSeleccionado;
 }
-
-
 
 module.exports = { getClienteSeleccionado, setClienteSeleccionado };

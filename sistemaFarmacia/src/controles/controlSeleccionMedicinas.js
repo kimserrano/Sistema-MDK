@@ -3,6 +3,7 @@ const VentaNegocio = require('../negocio/ventaNegocio');
 const productos = require('../dominio/producto');
 const { getClienteSeleccionado, setClienteSeleccionado } = require('../controles/controlCliente');
 const cajeroActivo = JSON.parse(localStorage.getItem('cajeroActivo'));
+const { ipcRenderer } = require('electron');
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -72,10 +73,31 @@ function mostrarProductosEncontrados(productos) {
     productos.forEach(producto => {
         const productoDiv = document.createElement('div');
         productoDiv.className = 'col-md-4';
+       // Verificar si la fecha de vencimiento existe y si está vencida
+       let fechaVencimiento = 'Sin fecha';
+       let estiloVencido = '';
+       let botonDeshabilitado = '';
+       if (producto.fechaVencimiento) {
+           const hoy = new Date();
+           hoy.setHours(0, 0, 0, 0);
+           const fechaProducto = new Date(producto.fechaVencimiento);
+           fechaProducto.setHours(0, 0, 0, 0);
+           const esVencido = fechaProducto < hoy; // Producto vencido si la fecha es menor a hoy
+    
+           if (esVencido ) {
+               fechaVencimiento = `Vencido: ${formatearFecha(producto.fechaVencimiento)}`;
+               estiloVencido = 'style="color: red; font-weight: bold;"'; // Estilo para productos vencidos
+               botonDeshabilitado = 'disabled';
+           } else {
+               fechaVencimiento = `Vence: ${formatearFecha(producto.fechaVencimiento)}`;
+           }
+       }
+
         productoDiv.innerHTML = `
             <div class="product">
                 <h6>${producto.nombre}</h6>
                 <p>$${producto.precio.toFixed(2)}</p>
+              <p ${estiloVencido}>${fechaVencimiento}</p> 
                  <div class="d-flex justify-content-center align-items-center mb-3">
             <div class="d-flex align-items-center">
                 <p class="mb-0 mr-2">Código:</p>
@@ -86,7 +108,7 @@ function mostrarProductosEncontrados(productos) {
                     <button class="btn btn-outline-primary" onclick="cambiarCantidad(this, -1)">-</button>
                     <input type="number" value="0" min="0" max="${producto.cantidad}" class="form-control mx-2 text-center cantidad-input" style="width: 70px;" 
                            oninput="validarCantidad(this, ${producto.cantidad})"> <!-- Validación de input -->
-                    <button class="btn btn-outline-primary" onclick="cambiarCantidad(this, 1)">+</button>
+                    <button class="btn btn-outline-primary" onclick="cambiarCantidad(this, 1)" ${botonDeshabilitado}>+</button>
                 </div>
             </div>
         `;
@@ -107,6 +129,13 @@ async function cargarProductos() {
     }
 }
 
+// Función para formatear la fecha
+function formatearFecha(fechaStr) {
+    const fecha = new Date(fechaStr);
+    const opciones = { month: 'short', day: 'numeric', year: 'numeric' }; // Formato: "Nov 12, 2024"
+    return fecha.toLocaleDateString('en-US', opciones);
+}
+
 function mostrarProductos(productos) {
     const productsSection = document.querySelector('.products-section-bottom .row');
     productsSection.innerHTML = ''; // Limpiar el contenido existente
@@ -118,6 +147,7 @@ function mostrarProductos(productos) {
             <div class="product">
                 <h6>${producto.nombre}</h6>
                 <p>$${producto.precio.toFixed(2)}</p>
+                <p id="fecha"></p>
                 <p class="product-id">${producto.id}</p> 
                 <div class="d-flex justify-content-center align-items-center">
                     <button class="btn btn-outline-primary" onclick="cambiarCantidad(this, -1)">-</button>
@@ -421,6 +451,12 @@ function guardarTicket() {
             });
         });
 }
+
+
+function verHistorial(telefono) {
+    ipcRenderer.send('open-historial', telefono);
+}
+
 
 // Añadir eventListener al botón "Pagar"
 const botonPagar = document.querySelector('.btn.btn-primary');

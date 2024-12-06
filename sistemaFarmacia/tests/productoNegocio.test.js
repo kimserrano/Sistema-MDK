@@ -66,12 +66,6 @@ describe('ProductoNegocio', () => {
                 .rejects.toThrow('La fecha de vencimiento es inválida. Debe tener el formato YYYY-MM-DD.');
         });
 
-        it('debería lanzar un error si el producto ya existe', async () => {
-            mockProductoDAO.verificarProductoExistente.mockResolvedValue(true); // Simular que el producto existe
-            await expect(productoNegocio.crearProducto({ nombre: 'NombreValido', lote: 'Lote123', cantidad: 5, precio: 10, fechaVencimiento: '2024-10-22' }))
-                .rejects.toThrow('El producto con este nombre ya existe.');
-        });
-
         it('debería crear un nuevo producto correctamente', async () => {
             mockProductoDAO.verificarProductoExistente.mockResolvedValue(false); // Simular que el producto no existe
             mockProductoDAO.crearProducto.mockResolvedValue('Producto creado'); // Simular que se crea el producto

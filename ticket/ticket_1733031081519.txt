@@ -1,0 +1,12 @@
+Ticket de Compra
+
+Cliente: kimberly
+Teléfono: 6443326038
+
+Cajero: lokis
+
+Paracetamol $100.00 x 1
+
+Total: $100.00
+IVA: -$10.00
+Total con IVA: $90.00

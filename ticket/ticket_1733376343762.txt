@@ -1,0 +1,11 @@
+Ticket de Compra
+
+Cliente: público en general
+
+Cajero: lokis
+
+Ibuprofeno $150.00 x 1
+
+Total: $150.00
+IVA: $24.00
+Total con IVA: $174.00

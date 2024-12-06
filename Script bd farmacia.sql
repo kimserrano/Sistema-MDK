@@ -22,7 +22,7 @@ CREATE TABLE Cliente (
 -- Tabla para Productos
 CREATE TABLE Producto (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    Nombre VARCHAR(100) UNIQUE,
+    Nombre VARCHAR(100),
     Lote VARCHAR(50),
     FechaVencimiento DATE,
     Cantidad INT,
@@ -47,7 +47,8 @@ CREATE TABLE VentaProducto (
     IdVenta INT,
     Nombre VARCHAR(100),  -- Cambiado de INT a VARCHAR(100) para coincidir con la tabla Producto
     Cantidad INT NOT NULL,
+	IdProducto INT,
     PRIMARY KEY (IdVenta, Nombre),
     FOREIGN KEY (IdVenta) REFERENCES Venta(IdVenta) ON DELETE CASCADE,
-    FOREIGN KEY (Nombre) REFERENCES Producto(Nombre) ON DELETE CASCADE
+    FOREIGN KEY (IdProducto) REFERENCES Producto(id) ON DELETE CASCADE
 );

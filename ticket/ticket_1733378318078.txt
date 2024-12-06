@@ -1,0 +1,11 @@
+Ticket de Compra
+
+Cliente: público en general
+
+Cajero: lokis
+
+Loratadina $81.00 x 20
+
+Total: $1620.00
+IVA: $259.20
+Total con IVA: $1879.20
