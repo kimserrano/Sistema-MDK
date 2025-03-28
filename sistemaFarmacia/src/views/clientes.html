@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MDK Medicinas - Clientes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <link rel="stylesheet" href="./css/styleListaClientes.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="back-button">
+    <button id="btnRegresar" class="btn btn-secondary">
+        <i class="bi bi-arrow-left me-2"></i> Regresar
+    </button>
+</div>
+
+  <div class="container">
+    <h1>MDK Medicinas</h1>
+    <h2>CLIENTES</h2>
+    
+    <div id="search-container">
+      <input type="text" id="search-input" placeholder="Buscar cliente...">
+      <button id="search-button">Buscar</button>
+      <button id="new-button">Nuevo</button>
+    </div>
+    
+    <div id="client-list">
+    </div>
+  </div>
+  <!-- Modal para Confirmación de Eliminación -->
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="confirmDeleteModalLabel">¿Estás seguro?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>Esta acción eliminará al cliente de forma permanente.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button type="button" id="confirmDeleteButton" class="btn btn-danger">Sí, estoy seguro</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="editNameModal" tabindex="-1" aria-labelledby="editNameModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-warning text-white">
+          <h5 class="modal-title" id="editNameModalLabel">Editar Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <h5 class="modal-title" id="editNameModalLabel">Editar Nombre</h5>
+          <input type="text" class="form-control" id="newNameInput" placeholder="Nuevo nombre...">
+          <small id="error-message" class="text-danger" style="display: none;">El nombre es obligatorio.</small>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="confirmEditButton" class="btn btn-warning">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('new-button').addEventListener('click', function () {
+        window.location.href = '../views/registerCliente.html';
+    });
+</script>
+  <script src="../controles/controlListaClientes.js"></script>
+   <script>
+    document.getElementById('btnRegresar').addEventListener('click', function () {
+        window.history.back(); // Regresa al HTML anterior en el historial
+    });
+</script>
+</body>
+</html>

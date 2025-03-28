@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Compras del Cliente</title>
+    <link rel="stylesheet" href="./css/styleHistorial.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Historial de Compras</h1>
+        
+        <div class="filters">
+            <input type="text" id="searchProducto" placeholder="Buscar por producto">
+            <input type="date" id="fechaInicio" placeholder="Fecha inicio">
+            <input type="date" id="fechaFin" placeholder="Fecha fin">
+            <button id="filtrarBtn">Filtrar</button>
+        </div>
+
+        <div class="historial-container">
+            <table id="historialCompras">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Lote</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../controles/controlHistorial.js"></script>
+</body>
+</html>

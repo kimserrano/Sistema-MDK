@@ -1,0 +1,11 @@
+Ticket de Compra
+
+Cliente: público en general
+
+Cajero: cajero1
+
+Paracetamol $50.00 x 3
+
+Total: $150.00
+IVA: $24.00
+Total con IVA: $174.00

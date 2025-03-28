@@ -1,0 +1,56 @@
+body {
+    background-color: #d3e9ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.back-button a {
+    font-size: 3rem; 
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.back-button a:hover {
+    color: #155ab7;
+}
+
+
+h2 {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    color: #333;
+    font-size: 14px;
+}
+
+.text-center a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.text-center a:hover {
+    text-decoration: underline;
+}
+
+.btn-primary {
+    background-color: #1a73e8;
+    border-color: #1a73e8;
+}
+
+.btn-primary:hover {
+    background-color: #155ab7;
+    border-color: #155ab7;
+}
+
